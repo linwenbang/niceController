@@ -88,11 +88,15 @@ public class UserManagerAdpater extends BaseAdapter {
 		String id = mList.get(position).getUserid().toString();
 		if (!TextUtils.isEmpty(id)) {
 			viewHolder.txt_id.setText(id);
+		}else {
+			viewHolder.txt_id.setText("id未知");
 		}
 
 		String alisa = mList.get(position).getAlias().toString();
 		if (!TextUtils.isEmpty(alisa)) {
 			viewHolder.txt_alisa.setText(alisa);
+		}else {
+			viewHolder.txt_id.setText("alisa未知");
 		}
 
 		String isAdmin = mList.get(position).getIsAdmin().toString();
@@ -114,18 +118,17 @@ public class UserManagerAdpater extends BaseAdapter {
 	}
 
 	/**
-	 * 删除注册用户 
-	 * DELETE: /api/v2.0/regist/{userid}/{deluserid}
+	 * 删除注册用户 DELETE: /api/v2.0/regist/{userid}/{deluserid}
 	 */
 	private void delUser(final int pos) {
 		// TODO Auto-generated method stub
 		String url = UrlContants.getDEL_USERS_URL();
 		Map<String, String> reqParam = new HashMap<String, String>();
 		reqParam.put("{userid}", MacUtils.getMac(mContext));
-		reqParam.put("{deluserid}",mList.get(pos).getUserid());
+		reqParam.put("{deluserid}", mList.get(pos).getUserid().toString());
 
 		url = UrlContants.creatUrl(url, reqParam);
-	
+
 		HttpUtils.delete(url, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(String json) {

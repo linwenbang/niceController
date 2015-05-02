@@ -24,7 +24,7 @@
 
     <!-- 注册用户管理 -->
     <string name="register_user_manager">注册用户管理</string>
-    <string name="register_user_manager_del">刪除</string>
+    <string name="register_user_manager_del">删除</string>
 
     <!-- 修改服务器url -->
     <string name="modify_url">输入新的URL</string>

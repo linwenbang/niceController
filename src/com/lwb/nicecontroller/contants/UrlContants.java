@@ -10,8 +10,10 @@ import com.lwb.nicecontroller.utils.StringUtils;
  */
 public class UrlContants {
 
+//	public static final String HEAD_URL_DEFAULT = "http://test.tunnel.mobi/";
 	public static final String HEAD_URL_DEFAULT = "http://smarthome523000.sinaapp.com/";
 	public static String HEAD_URL = "http://smarthome523000.sinaapp.com/";
+	// public static String HEAD_URL = "http://test.tunnel.mobi/";
 
 	public static final String HEAD_URL_SP = "com.lwb.head.url";
 
@@ -92,7 +94,8 @@ public class UrlContants {
 	 * @return the dEL_USERS_URL
 	 */
 	public static String getDEL_USERS_URL() {
-		return HEAD_URL + "api/v2.0/regist/{userid}/{deluserid}";
+//		return HEAD_URL + "api/v2.0/regist/{userid}/{deluserid}";
+		return HEAD_URL + "api/v2.0/regist/{userid}&{deluserid}";
 	}
 
 	/**

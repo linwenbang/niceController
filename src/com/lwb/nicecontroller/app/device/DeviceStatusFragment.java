@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.baidu.voicerecognition.android.ui.BaiduASRDigitalDialog;
@@ -15,12 +17,9 @@ import com.baidu.voicerecognition.android.ui.DialogRecognitionListener;
 import com.lwb.nicecontroller.R;
 import com.lwb.nicecontroller.base.BaseFragment;
 
-public class DeviceStatusFragment extends BaseFragment {
+public class DeviceStatusFragment extends BaseFragment implements
+		OnClickListener {
 
-	// 开始按钮
-	private TextView txt_voice;
-	// 文本框
-	private TextView txt_voice_result;
 	// 百度语音识别对话框
 	private BaiduASRDigitalDialog mDialog = null;
 	private DialogRecognitionListener mDialogListener = null;
@@ -28,7 +27,24 @@ public class DeviceStatusFragment extends BaseFragment {
 	private String API_KEY = "eHPfF62QfGdSzkhW0Uahi0EL";
 	private String SECRET_KEY = "a766efdcc36e90dc4eb7260201abb89b";
 
+	// 视图控件-----------------------
 	private View view;
+	// 开始按钮
+	private TextView txt_voice;
+	// 文本框
+	private TextView txt_voice_result;
+	private ImageView img_led;
+	private ImageView img_fan;
+	private ImageView img_beep;
+	private ImageView img_lock;
+	private ImageView img_hum;
+	private ImageView img_temp;
+
+	private TextView txt_temp;
+	private TextView txt_hum;
+
+	private SeekBar seekBar_temp;
+	private SeekBar seekBar_hum;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -38,6 +54,86 @@ public class DeviceStatusFragment extends BaseFragment {
 		view = inflater.inflate(R.layout.layout_main, null);
 
 		super.onCreate(savedInstanceState);
+
+		initView();
+		initData();
+		initVoice();
+
+		return view;
+	}
+
+	/**
+	 * 
+	 */
+	private void initView() {
+		// TODO Auto-generated method stub
+		img_beep = (ImageView) view.findViewById(R.id.img_beep);
+		img_led = (ImageView) view.findViewById(R.id.img_led);
+		img_fan = (ImageView) view.findViewById(R.id.img_fan);
+		img_lock = (ImageView) view.findViewById(R.id.img_lock);
+		img_hum = (ImageView) view.findViewById(R.id.img_hum);
+		img_temp = (ImageView) view.findViewById(R.id.img_temp);
+
+		img_beep.setOnClickListener(this);
+		img_led.setOnClickListener(this);
+		img_fan.setOnClickListener(this);
+		img_lock.setOnClickListener(this);
+		img_hum.setOnClickListener(this);
+		img_temp.setOnClickListener(this);
+
+		txt_hum = (TextView) view.findViewById(R.id.txt_hum);
+		txt_temp = (TextView) view.findViewById(R.id.txt_temp);
+
+		seekBar_hum = (SeekBar) view.findViewById(R.id.seekBar_hum);
+		seekBar_temp = (SeekBar) view.findViewById(R.id.seekBar_temp);
+	}
+
+	/**
+	 * 
+	 */
+	private void initData() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void changStatus(View view) {
+		view.setSelected(!view.isSelected());
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		// TODO Auto-generated method stub
+		changStatus(arg0);
+		switch (arg0.getId()) {
+		case R.id.img_beep:
+
+			break;
+		case R.id.img_fan:
+
+			break;
+		case R.id.img_hum:
+
+			break;
+		case R.id.img_led:
+
+			break;
+		case R.id.img_lock:
+
+			break;
+		case R.id.img_temp:
+
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void initVoice() {
+		// TODO Auto-generated method stub
 		if (mDialog == null) {
 			if (mDialog != null) {
 				mDialog.dismiss();
@@ -69,7 +165,7 @@ public class DeviceStatusFragment extends BaseFragment {
 		}
 		// 设置语音识别模式为输入模式
 		mDialog.setSpeechMode(BaiduASRDigitalDialog.SPEECH_MODE_INPUT);
-//		mDialog.se
+		// mDialog.se
 		// 禁用语义识别
 		mDialog.getParams().putBoolean(BaiduASRDigitalDialog.PARAM_NLU_ENABLE,
 				false);
@@ -84,6 +180,6 @@ public class DeviceStatusFragment extends BaseFragment {
 			}
 		});
 
-		return view;
 	}
+
 }

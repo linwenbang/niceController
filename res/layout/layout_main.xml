@@ -41,32 +41,32 @@
             android:background="@drawable/main_bar_bg_default" >
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/img_led"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                android:src="@drawable/led_defualt" />
+                android:src="@drawable/img_led_selector" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/img_fan"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                android:src="@drawable/fan_default" />
+                android:src="@drawable/img_fan_selector" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/img_beep"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                android:src="@drawable/beep_default" />
+                android:src="@drawable/img_beep_selector" />
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/img_lock"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                android:src="@drawable/sercue_default" />
+                android:src="@drawable/img_lock_selector" />
         </LinearLayout>
 
         <RelativeLayout
@@ -77,21 +77,21 @@
             android:orientation="horizontal" >
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/img_hum"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/humidity_defualt" />
+                android:src="@drawable/img_hum_selector" />
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/seekBar2"
-                android:layout_toRightOf="@+id/imageView4"
+                android:layout_above="@+id/seekBar_hum"
+                android:layout_toRightOf="@+id/img_hum"
                 android:text="TextView" />
 
             <SeekBar
-                android:id="@+id/seekBar2"
+                android:id="@+id/seekBar_hum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textView1"
@@ -101,12 +101,12 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/txt_hum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/seekBar2"
+                android:layout_below="@+id/seekBar_hum"
                 android:layout_marginTop="16dp"
-                android:layout_toRightOf="@+id/imageView4"
+                android:layout_toRightOf="@+id/img_hum"
                 android:text="TextView"
                 android:textSize="18sp" />
         </RelativeLayout>
@@ -119,29 +119,29 @@
             android:orientation="horizontal" >
 
             <ImageView
-                android:id="@+id/imageView6"
+                android:id="@+id/img_temp"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/temp_defalut" />
+                android:src="@drawable/img_tmp_selector" />
 
             <SeekBar
-                android:id="@+id/seekBar1"
+                android:id="@+id/seekBar_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="18dp"
-                android:layout_toRightOf="@+id/imageView6"
+                android:layout_toRightOf="@+id/img_temp"
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/txt_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/seekBar1"
+                android:layout_below="@+id/seekBar_temp"
                 android:layout_marginTop="17dp"
-                android:layout_toRightOf="@+id/imageView6"
+                android:layout_toRightOf="@+id/img_temp"
                 android:text="TextView"
                 android:textSize="18sp" />
         </RelativeLayout>

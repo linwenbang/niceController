@@ -1,7 +1,5 @@
 package com.lwb.nicecontroller.jpush;
 
-import com.lwb.nicecontroller.app.testhttp.TestPushFragment;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +14,7 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class MyReceiver extends BroadcastReceiver {
 	private static final String TAG = "JPush";
+	public static final String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -92,30 +91,30 @@ public class MyReceiver extends BroadcastReceiver {
 
 	// send msg to MainActivity
 	private void processCustomMessage(Context context, Bundle bundle) {
-	//	if (MainActivity.isForeground) {
-			// String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-			// String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-			// String title = bundle
-			// .getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
-			// Intent msgIntent = new
-			// Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
-			// msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
-			// msgIntent.putExtra(MainActivity.KEY_TITLE, title);
-			// if (!ExampleUtil.isEmpty(extras)) {
-			// try {
-			// JSONObject extraJson = new JSONObject(extras);
-			// if (null != extraJson && extraJson.length() > 0) {
-			// msgIntent.putExtra(MainActivity.KEY_EXTRAS, extras);
-			// }
-			// } catch (JSONException e) {
-			//
-			// }
-			//
-			// }
+		// if (MainActivity.isForeground) {
+		// String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+		// String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+		// String title = bundle
+		// .getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
+		// Intent msgIntent = new
+		// Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
+		// msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
+		// msgIntent.putExtra(MainActivity.KEY_TITLE, title);
+		// if (!ExampleUtil.isEmpty(extras)) {
+		// try {
+		// JSONObject extraJson = new JSONObject(extras);
+		// if (null != extraJson && extraJson.length() > 0) {
+		// msgIntent.putExtra(MainActivity.KEY_EXTRAS, extras);
+		// }
+		// } catch (JSONException e) {
+		//
+		// }
+		//
+		// }
 
-			Intent msgIntent = new Intent(TestPushFragment.MESSAGE_RECEIVED_ACTION);
-			msgIntent.putExtras(bundle);
-			context.sendBroadcast(msgIntent);
-	//	}
+		Intent msgIntent = new Intent(MESSAGE_RECEIVED_ACTION);
+		msgIntent.putExtras(bundle);
+		context.sendBroadcast(msgIntent);
+		// }
 	}
 }

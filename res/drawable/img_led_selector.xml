@@ -4,6 +4,7 @@
     <item android:drawable="@drawable/led_light" android:state_pressed="true"/>
     <item android:drawable="@drawable/led_light" android:state_focused="true"/>
     <item android:drawable="@drawable/led_light" android:state_enabled="false"/>
+    <item android:drawable="@drawable/led_light" android:state_selected="true"/>
     <item android:drawable="@drawable/led_defualt"/>
 
 </selector>
