@@ -22,7 +22,7 @@ public class HttpUtils {
 	static {
 		client.setTimeout(11000); // 设置链接超时，如果不设置，默认为10s
 	}
-	
+
 	public static void logUrl(String urlString) {
 		LogUtils.e("请求地址：" + urlString);
 	}
@@ -52,66 +52,88 @@ public class HttpUtils {
 		client.get(urlString, params, res);
 		logUrl(urlString);
 	}
-	
-	
+
 	public static void post(String urlString, AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
 	{
 		client.post(urlString, res);
 		logUrl(urlString);
 	}
-	
-	
-	public static void post(String urlString, Map<String , String > body ,AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
+
+	public static void post(String urlString, Map<String, String> body,
+			AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
 	{
-		RequestParams requestParams =  new RequestParams(body);
+		RequestParams requestParams = new RequestParams(body);
+		printBosdy(body);
 		client.post(urlString, requestParams, res);
 		logUrl(urlString);
 	}
-	
-	public static void post(Context context ,String urlString, RequestParams requestParams,AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
+
+	/**
+	 * @param body
+	 */
+	private static void printBosdy(Map<String, String> body) {
+		// TODO Auto-generated method stub
+		String bodyStr = new String();
+		for (Map.Entry entry : body.entrySet()) {
+			Object value = entry.getValue();
+			Object key = entry.getKey();
+			bodyStr += ("key :" + key + "  value :" + value + "\n");
+		}
+
+		LogUtils.e("body : -----------------\n" + bodyStr
+				+ "------------------------");
+
+	}
+
+	public static void post(Context context, String urlString,
+			RequestParams requestParams, AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
 	{
 		client.post(context, urlString, requestParams, res);
 		logUrl(urlString);
 	}
 
-	public static void post(Context context ,String urlString, HttpEntity httpEntity, String str2,AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
+	public static void post(Context context, String urlString,
+			HttpEntity httpEntity, String str2, AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
 	{
 		client.post(context, urlString, httpEntity, str2, res);
 		logUrl(urlString);
 	}
-	
-	public static void put(String urlString,AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
+
+	public static void put(String urlString, AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
 	{
 		client.put(urlString, res);
 		logUrl(urlString);
 	}
-	
-	public static void put(String urlString,  Map<String , String > body, AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
+
+	public static void put(String urlString, Map<String, String> body,
+			AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
 	{
-		RequestParams requestParams =  new RequestParams(body);
+		RequestParams requestParams = new RequestParams(body);
+		printBosdy(body);
 		client.put(urlString, requestParams, res);
 		logUrl(urlString);
 	}
 
-	public static void put(Context context ,String urlString, RequestParams requestParams,AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
+	public static void put(Context context, String urlString,
+			RequestParams requestParams, AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
 	{
 		client.put(context, urlString, requestParams, res);
 		logUrl(urlString);
 	}
-	
-	public static void delete(String urlString,AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
+
+	public static void delete(String urlString, AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
 	{
 		client.delete(urlString, res);
 		logUrl(urlString);
 	}
 
-	
-	public static void delete(Context context,String urlString,AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
+	public static void delete(Context context, String urlString,
+			AsyncHttpResponseHandler res) // 用一个完整url获取一个string对象
 	{
 		client.delete(context, urlString, res);
 		logUrl(urlString);
 	}
-	
+
 	public static AsyncHttpClient getClient() {
 		return client;
 	}

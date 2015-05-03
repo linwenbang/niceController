@@ -1,6 +1,8 @@
 package com.lwb.nicecontroller.app.device;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -14,8 +16,17 @@ import android.widget.TextView;
 
 import com.baidu.voicerecognition.android.ui.BaiduASRDigitalDialog;
 import com.baidu.voicerecognition.android.ui.DialogRecognitionListener;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.lwb.nicecontroller.R;
 import com.lwb.nicecontroller.base.BaseFragment;
+import com.lwb.nicecontroller.bean.DeviceBean;
+import com.lwb.nicecontroller.contants.UrlContants;
+import com.lwb.nicecontroller.enums.DeviceActionStatus;
+import com.lwb.nicecontroller.enums.DeviceNameStatus;
+import com.lwb.nicecontroller.utils.FastjsonUtils;
+import com.lwb.nicecontroller.utils.HttpUtils;
+import com.lwb.nicecontroller.utils.LogUtils;
+import com.lwb.nicecontroller.utils.MacUtils;
 
 public class DeviceStatusFragment extends BaseFragment implements
 		OnClickListener {
@@ -45,6 +56,10 @@ public class DeviceStatusFragment extends BaseFragment implements
 
 	private SeekBar seekBar_temp;
 	private SeekBar seekBar_hum;
+
+	// 全局常量------------
+	private static final String DEVICE_KEY = "device";
+	private static final String ACTION_KEY = "action";
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -93,39 +108,132 @@ public class DeviceStatusFragment extends BaseFragment implements
 	 */
 	private void initData() {
 		// TODO Auto-generated method stub
-
+		// 获取所有设备状态
+		actionForDeviceStatus(DeviceNameStatus.all.name,
+				DeviceActionStatus.status.action, null);
 	}
 
-	public void changStatus(View view) {
-		view.setSelected(!view.isSelected());
+	/**
+	 * 改变设备图标状态
+	 * 
+	 * @param view
+	 */
+	public void changStatus(View device) {
+		device.setSelected(!device.isSelected());
 	}
 
 	@Override
-	public void onClick(View arg0) {
+	public void onClick(View view) {
 		// TODO Auto-generated method stub
-		changStatus(arg0);
-		switch (arg0.getId()) {
-		case R.id.img_beep:
+		setDeviceStatus(view);
+	}
 
+	/**
+	 * 获取所有设备状态 POST: /api/v2.0/device/{userid}
+	 */
+	private void actionForDeviceStatus(final String device,
+			final String action, final View deviceView) {
+		String url = UrlContants.getGET_DEVICE_STATUS_URL();
+		Map<String, String> reqParam = new HashMap<String, String>();
+		reqParam.put("{userid}", MacUtils.getMac(mContext));
+
+		url = UrlContants.creatUrl(url, reqParam);
+		Map<String, String> body = new HashMap<String, String>();
+		body.put(DEVICE_KEY, device);
+		body.put(ACTION_KEY, action);
+
+		HttpUtils.post(url, body, new AsyncHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(String json) {
+				// TODO Auto-generated method stub
+				super.onSuccess(json);
+				LogUtils.e("返回结果" + json);
+				showShortToast("更新设备状态成功");
+				setResult(device, action, json, deviceView);
+			}
+
+			@Override
+			public void onFailure(Throwable arg0, String arg1) {
+				// TODO Auto-generated method stub
+				super.onFailure(arg0, arg1);
+
+				showShortToast("onFailure");
+			}
+		});
+
+	}
+
+	private DeviceBean deviceBean;
+
+	/**
+	 * 处理返回结果
+	 */
+	private void setResult(String device, String action, String json,
+			View deviceView) {
+		// TODO Auto-generated method stub
+		if (device.equals(DeviceNameStatus.all.name)
+				&& action.equals(DeviceActionStatus.status.name())) {
+			// 获取所有设备状态
+			String dto = FastjsonUtils.getDto(json);
+			deviceBean = (DeviceBean) FastjsonUtils.getBeanObject(dto,
+					DeviceBean.class);
+
+			img_led.setSelected(deviceBean.getLed());
+			img_fan.setSelected(deviceBean.getFan());
+			img_beep.setSelected(deviceBean.getBeep());
+			img_lock.setSelected(deviceBean.getSafe_mode());
+
+			int hum = deviceBean.getDht11().getWet();
+			int temp = deviceBean.getDht11().getTemp();
+
+			txt_hum.setText(String.valueOf(hum));
+			txt_temp.setText(String.valueOf(temp));
+
+			seekBar_hum.setProgress(hum);
+			seekBar_temp.setProgress(temp);
+
+		} else {
+			changStatus(deviceView);
+		}
+	}
+
+	/**
+	 * 改变设置状态请求设置
+	 */
+	private void setDeviceStatus(View deviceView) {
+		// TODO Auto-generated method stub
+		String deviceName = null;
+		Boolean isOpen = false;
+		switch (deviceView.getId()) {
+		case R.id.img_beep:
+			deviceName = DeviceNameStatus.beep.name;
+			isOpen = deviceBean.getBeep();
 			break;
 		case R.id.img_fan:
-
-			break;
-		case R.id.img_hum:
-
+			deviceName = DeviceNameStatus.fan.name;
+			isOpen = deviceBean.getFan();
 			break;
 		case R.id.img_led:
-
+			deviceName = DeviceNameStatus.led.name;
+			isOpen = deviceBean.getLed();
 			break;
 		case R.id.img_lock:
-
+			deviceName = DeviceNameStatus.safe_mode.name;
+			isOpen = deviceBean.getSafe_mode();
 			break;
-		case R.id.img_temp:
-
-			break;
-
 		default:
 			break;
+		}
+
+		if (isOpen) {
+			// 关闭申请
+			actionForDeviceStatus(deviceName, DeviceActionStatus.close.action,
+					deviceView);
+		} else {
+			// 开启申请
+			actionForDeviceStatus(deviceName, DeviceActionStatus.open.action,
+					deviceView);
 		}
 	}
 
@@ -155,7 +263,16 @@ public class DeviceStatusFragment extends BaseFragment implements
 					ArrayList<String> rs = mResults != null ? mResults
 							.getStringArrayList(RESULTS_RECOGNITION) : null;
 					if (rs != null && rs.size() > 0) {
-						txt_voice_result.setText(rs.get(0));
+
+						String result = (String) rs.get(0).subSequence(0,
+								rs.get(0).length() - 1);
+						LogUtils.e("语音抓取字符：" + result);
+						txt_voice_result.setText(result);
+						if (result.equals("刷新")) {
+							// 获取所有设备状态
+							actionForDeviceStatus(DeviceNameStatus.all.name,
+									DeviceActionStatus.status.action, null);
+						}
 					}
 
 				}
