@@ -98,7 +98,10 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="16dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:progress="20"
+                android:progressDrawable="@drawable/po_seekbar"
+                android:thumb="@drawable/seekbar_thumb" />
 
             <TextView
                 android:id="@+id/txt_hum"
@@ -133,7 +136,10 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="18dp"
                 android:layout_toRightOf="@+id/img_temp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:progress="50"
+                android:progressDrawable="@drawable/po_seekbar"
+                android:thumb="@drawable/seekbar_thumb" />
 
             <TextView
                 android:id="@+id/txt_temp"

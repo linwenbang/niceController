@@ -179,7 +179,7 @@ public class NiceMainActivity extends BaseFragmentActivity {
 		body.put("newuserid", registerResultBean.getUserid());
 		body.put("newalias", registerResultBean.getAlias());
 		body.put("confirm", String.valueOf(confirm));
-		HttpUtils.get(url, new AsyncHttpResponseHandler() {
+		HttpUtils.post(url, body, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onSuccess(String arg0) {
