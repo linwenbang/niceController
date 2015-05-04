@@ -6,6 +6,7 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -149,7 +150,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 				// TODO Auto-generated method stub
 				super.onSuccess(json);
 				LogUtils.e("返回结果" + json);
-				showShortToast("更新设备状态成功");
+				
 				setResult(device, action, json, deviceView);
 			}
 
@@ -175,23 +176,30 @@ public class DeviceStatusFragment extends BaseFragment implements
 		if (device.equals(DeviceNameStatus.all.name)
 				&& action.equals(DeviceActionStatus.status.name())) {
 			// 获取所有设备状态
-			String dto = FastjsonUtils.getDto(json);
-			deviceBean = (DeviceBean) FastjsonUtils.getBeanObject(dto,
-					DeviceBean.class);
+			try {
+				String dto = FastjsonUtils.getDto(json);
+				deviceBean = (DeviceBean) FastjsonUtils.getBeanObject(dto,
+						DeviceBean.class);
 
-			img_led.setSelected(deviceBean.getLed());
-			img_fan.setSelected(deviceBean.getFan());
-			img_beep.setSelected(deviceBean.getBeep());
-			img_lock.setSelected(deviceBean.getSafe_mode());
+				img_led.setSelected(deviceBean.getLed());
+				img_fan.setSelected(deviceBean.getFan());
+				img_beep.setSelected(deviceBean.getBeep());
+				img_lock.setSelected(deviceBean.getSafe_mode());
 
-			int hum = deviceBean.getDht11().getWet();
-			int temp = deviceBean.getDht11().getTemp();
+				int hum = deviceBean.getDht11().getWet();
+				int temp = deviceBean.getDht11().getTemp();
 
-			txt_hum.setText(String.valueOf(hum));
-			txt_temp.setText(String.valueOf(temp));
+				txt_hum.setText(String.valueOf(hum));
+				txt_temp.setText(String.valueOf(temp));
 
-			seekBar_hum.setProgress(hum);
-			seekBar_temp.setProgress(temp);
+				seekBar_hum.setProgress(hum);
+				seekBar_temp.setProgress(temp);
+				showShortToast("更新设备状态成功");
+			} catch (Exception e) {
+				LogUtils.e("返回结果解析错误：" + json);
+				showShortToast("返回结果解析错误：" + json);
+			}
+			
 
 		} else {
 			changStatus(deviceView);

@@ -127,8 +127,14 @@ public class NiceMainActivity extends BaseFragmentActivity {
 					setCostomMsg(printBundle(bundle));
 					String msg = bundle.getString("cn.jpush.android.MESSAGE");
 					LogUtils.e("msg = " + msg);
-					registerResultBean = (RegisterResultBean) FastjsonUtils
-							.getBeanObject(msg, RegisterResultBean.class);
+					
+					try {
+						registerResultBean = (RegisterResultBean) FastjsonUtils
+								.getBeanObject(msg, RegisterResultBean.class);
+					} catch (Exception e) {
+						LogUtils.e("解析错误");
+					}
+					
 
 					// 判断推送类别，进行处理-------------------------------------------
 					if (registerResultBean != null
