@@ -3,13 +3,15 @@ package com.lwb.nicecontroller.utils;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
+import com.lwb.nicecontroller.app.user.activity.AdminManagerActivity;
 import com.lwb.nicecontroller.jpush.ExampleUtil;
 
 /**
@@ -17,12 +19,12 @@ import com.lwb.nicecontroller.jpush.ExampleUtil;
  */
 public class SetTagOrAlisaUtils {
 
-	private Context mContext;
+	private Activity mActivity;
 
 	private static final String TAG = "JPush";
 
-	public void setTag(String tag, Context context) {
-		mContext = context;
+	public void setTag(String tag, Activity activity) {
+		mActivity = activity;
 		// ","隔开的多个 转换成 Set
 		String[] sArray = tag.split(",");
 		Set<String> tagSet = new LinkedHashSet<String>();
@@ -71,7 +73,7 @@ public class SetTagOrAlisaUtils {
 			case 6002:
 				logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
 				Log.i(TAG, logs);
-				if (ExampleUtil.isConnected(mContext.getApplicationContext())) {
+				if (ExampleUtil.isConnected(mActivity.getApplicationContext())) {
 					mHandler.sendMessageDelayed(
 							mHandler.obtainMessage(MSG_SET_ALIAS, alias),
 							1000 * 60);
@@ -85,7 +87,7 @@ public class SetTagOrAlisaUtils {
 				Log.e(TAG, logs);
 			}
 
-			ExampleUtil.showToast(logs, mContext.getApplicationContext());
+			ExampleUtil.showToast(logs, mActivity.getApplicationContext());
 		}
 
 	};
@@ -104,7 +106,7 @@ public class SetTagOrAlisaUtils {
 			case 6002:
 				logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
 				Log.i(TAG, logs);
-				if (ExampleUtil.isConnected(mContext.getApplicationContext())) {
+				if (ExampleUtil.isConnected(mActivity.getApplicationContext())) {
 					mHandler.sendMessageDelayed(
 							mHandler.obtainMessage(MSG_SET_TAGS, tags),
 							1000 * 60);
@@ -118,7 +120,8 @@ public class SetTagOrAlisaUtils {
 				Log.e(TAG, logs);
 			}
 
-			ExampleUtil.showToast(logs, mContext.getApplicationContext());
+			ExampleUtil.showToast(logs, mActivity.getApplicationContext());
+//			mActivity.finish();
 		}
 
 	};
@@ -134,14 +137,14 @@ public class SetTagOrAlisaUtils {
 			case MSG_SET_ALIAS:
 				Log.d(TAG, "Set alias in handler.");
 				JPushInterface.setAliasAndTags(
-						mContext.getApplicationContext(), (String) msg.obj,
+						mActivity.getApplicationContext(), (String) msg.obj,
 						null, mAliasCallback);
 				break;
 
 			case MSG_SET_TAGS:
 				Log.d(TAG, "Set tags in handler.");
 				JPushInterface.setAliasAndTags(
-						mContext.getApplicationContext(), null,
+						mActivity.getApplicationContext(), null,
 						(Set<String>) msg.obj, mTagsCallback);
 				break;
 

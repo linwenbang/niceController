@@ -14,7 +14,7 @@
     <string name="alias">昵称:</string>
     <string name="register">申请注册</string>
     <string name="login">登录</string>
-    <string name="admin_pwd">管理员密码</string>
+    <string name="admin_pwd">请输入管理员密码：</string>
     <string name="dialog_net_error">网络错误</string>
     <string name="dialog_ok">确定</string>
     <string name="ok">确定</string>
