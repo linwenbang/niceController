@@ -17,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
@@ -30,7 +29,6 @@ import com.lwb.nicecontroller.contants.UrlContants;
 import com.lwb.nicecontroller.jpush.ExampleUtil;
 import com.lwb.nicecontroller.utils.HttpUtils;
 import com.lwb.nicecontroller.utils.MacUtils;
-import com.lwb.nicecontroller.utils.UrlLogUtils;
 
 /**
  * @author lwb 创建日期:2015-4-8 上午9:41:13
@@ -38,10 +36,8 @@ import com.lwb.nicecontroller.utils.UrlLogUtils;
 public class UserRegisterActivity extends BaseActivity {
 
 	private EditText edt_alisa;
-	private EditText edt_url;
 	private Button btn_register;
 	private ProgressDialog pDialog;
-	private TextView txt_result;
 	private View view;
 
 	private static final String TAG = "JPush";
@@ -72,11 +68,8 @@ public class UserRegisterActivity extends BaseActivity {
 	private void initView() {
 		// TODO Auto-generated method stub
 		edt_alisa = (EditText) view.findViewById(R.id.edt_alisa);
-		edt_url = (EditText) view.findViewById(R.id.edt_url);
-		edt_url.setText(UrlContants.getREGISTER_URL());
 
 		btn_register = (Button) view.findViewById(R.id.btn_register);
-		txt_result = (TextView) view.findViewById(R.id.txt_result);
 		btn_register.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -132,15 +125,6 @@ public class UserRegisterActivity extends BaseActivity {
 		}
 
 		String url = UrlContants.getREGISTER_URL();
-
-		if (UrlLogUtils.URL_LOG_SWITCH) {
-			url = edt_url.getText().toString();
-		} else {
-			// edt_url.setVisibility(View.GONE);
-			// txt_result.setVisibility(View.GONE);
-			edt_url.setEnabled(false);
-		}
-
 		
 
 		Log.e("BUG", "get()调用");
@@ -153,7 +137,6 @@ public class UserRegisterActivity extends BaseActivity {
 		reqParam.put("{userid}", MacUtils.getMac(mContext));
 
 		url = UrlContants.creatUrl(url, reqParam);
-		edt_url.setText(url);
 
 		Map<String, String> body = new HashMap<String,String>();
 		body.put("userid", MacUtils.getMac(mContext));
@@ -175,10 +158,6 @@ public class UserRegisterActivity extends BaseActivity {
 				super.onSuccess(json);
 				pDialog.dismiss();
 				showShortToast("onSuccess");
-
-				if (txt_result.getVisibility() != View.GONE) {
-					txt_result.setText(json);
-				}
 
 				setAlias();
 

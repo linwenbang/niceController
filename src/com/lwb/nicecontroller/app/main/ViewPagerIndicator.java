@@ -48,11 +48,11 @@ public class ViewPagerIndicator extends LinearLayout {
 	/**
 	 * 三角形的宽度为单个Tab的1/6
 	 */
-	private static final float RADIO_TRIANGEL = 1.0f / 6;
+	private static final float RADIO_TRIANGEL = 0.8f;
 	/**
 	 * 三角形的最大宽度
 	 */
-	private final int DIMENSION_TRIANGEL_WIDTH = (int) (getScreenWidth() / 6 * RADIO_TRIANGEL);
+	private final int DIMENSION_TRIANGEL_WIDTH = (int) (getScreenWidth() / 2 * RADIO_TRIANGEL);
 
 	/**
 	 * 初始时，三角形指示器的偏移量
@@ -84,11 +84,11 @@ public class ViewPagerIndicator extends LinearLayout {
 	/**
 	 * 标题正常时的颜色
 	 */
-	private static final int COLOR_TEXT_NORMAL = 0x77FFFFFF;
+	private static final int COLOR_TEXT_NORMAL = 0xffcccccc;
 	/**
 	 * 标题选中时的颜色
 	 */
-	private static final int COLOR_TEXT_HIGHLIGHTCOLOR = 0xFFFFFFFF;
+	private static final int COLOR_TEXT_HIGHLIGHTCOLOR = 0xff000000;
 
 	public ViewPagerIndicator(Context context) {
 		this(context, null);
@@ -109,7 +109,8 @@ public class ViewPagerIndicator extends LinearLayout {
 		// 初始化画笔
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
-		mPaint.setColor(Color.parseColor("#ffffffff"));
+//		mPaint.setColor(Color.parseColor("#ff131e29"));
+		mPaint.setColor(Color.parseColor("#ffcc00"));
 		mPaint.setStyle(Style.FILL);
 		mPaint.setPathEffect(new CornerPathEffect(3));
 
@@ -314,10 +315,12 @@ public class ViewPagerIndicator extends LinearLayout {
 	private void initTriangle() {
 		mPath = new Path();
 
-		mTriangleHeight = (int) (mTriangleWidth / 2 / Math.sqrt(2));
+		mTriangleHeight = (int) (mTriangleWidth / 15 );
 		mPath.moveTo(0, 0);
 		mPath.lineTo(mTriangleWidth, 0);
-		mPath.lineTo(mTriangleWidth / 2, -mTriangleHeight);
+//		mPath.lineTo(mTriangleWidth / 2, -mTriangleHeight);
+		mPath.lineTo(mTriangleWidth, -mTriangleHeight);
+		mPath.lineTo(0, -mTriangleHeight);
 		mPath.close();
 	}
 

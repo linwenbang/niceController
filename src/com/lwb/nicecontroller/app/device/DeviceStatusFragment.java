@@ -6,7 +6,6 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,6 +53,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 
 	private TextView txt_temp;
 	private TextView txt_hum;
+	private TextView txt_refresh;
 
 	private SeekBar seekBar_temp;
 	private SeekBar seekBar_hum;
@@ -99,6 +99,8 @@ public class DeviceStatusFragment extends BaseFragment implements
 
 		txt_hum = (TextView) view.findViewById(R.id.txt_hum);
 		txt_temp = (TextView) view.findViewById(R.id.txt_temp);
+		txt_refresh = (TextView) view.findViewById(R.id.txt_refresh);
+		txt_refresh.setOnClickListener(this);
 
 		seekBar_hum = (SeekBar) view.findViewById(R.id.seekBar_hum);
 		seekBar_temp = (SeekBar) view.findViewById(R.id.seekBar_temp);
@@ -150,7 +152,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 				// TODO Auto-generated method stub
 				super.onSuccess(json);
 				LogUtils.e("返回结果" + json);
-				
+
 				setResult(device, action, json, deviceView);
 			}
 
@@ -199,7 +201,6 @@ public class DeviceStatusFragment extends BaseFragment implements
 				LogUtils.e("返回结果解析错误：" + json);
 				showShortToast("返回结果解析错误：" + json);
 			}
-			
 
 		} else {
 			changStatus(deviceView);
@@ -230,6 +231,9 @@ public class DeviceStatusFragment extends BaseFragment implements
 			deviceName = DeviceNameStatus.safe_mode.name;
 			isOpen = deviceBean.getSafe_mode();
 			break;
+		case R.id.txt_refresh:
+			actionForDeviceStatus(DeviceNameStatus.all.name, DeviceActionStatus.status.action, null);
+			return;
 		default:
 			break;
 		}

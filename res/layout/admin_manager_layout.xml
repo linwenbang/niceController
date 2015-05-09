@@ -42,5 +42,18 @@
         android:text="查看注册用户"
         android:textColor="@color/white"
         android:textSize="18sp" />
+    
+    <TextView
+        android:id="@+id/txt_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_selector"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="退出登录"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 </LinearLayout>

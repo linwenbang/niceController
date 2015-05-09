@@ -10,7 +10,7 @@
         android:id="@+id/id_indicator"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@drawable/title_bar_bg_one_row"
+        android:background="@color/white"
         android:orientation="horizontal"
         app:item_count="2" >
     </com.lwb.nicecontroller.app.main.ViewPagerIndicator>
