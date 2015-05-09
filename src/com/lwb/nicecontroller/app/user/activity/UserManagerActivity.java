@@ -54,7 +54,7 @@ public class UserManagerActivity extends BaseActivity {
 	 */
 	private void initData() {
 		// TODO Auto-generated method stub
-//		getList();
+		getList();
 	}
 
 	/**
@@ -63,47 +63,54 @@ public class UserManagerActivity extends BaseActivity {
 	 */
 	private void getList() {
 		// TODO Auto-generated method stub
-		String url = UrlContants.getGET_USERS_URL();
+		
+		try {
+			String url = UrlContants.getGET_USERS_URL();
 
-		Map<String, String> reqParam = new HashMap<String, String>();
-		reqParam.put("{userid}", MacUtils.getMac(mContext));
+			Map<String, String> reqParam = new HashMap<String, String>();
+			reqParam.put("{userid}", MacUtils.getMac(mContext));
 
-		url = UrlContants.creatUrl(url, reqParam);
+			url = UrlContants.creatUrl(url, reqParam);
 
-		HttpUtils.get(url, new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(String json) {
-				// TODO Auto-generated method stub
-				super.onSuccess(json);
-				showShortToast("onSuccess");
-				LogUtils.e("返回结果:" + json);
+			HttpUtils.get(url, new AsyncHttpResponseHandler() {
+				@Override
+				public void onSuccess(String json) {
+					// TODO Auto-generated method stub
+					super.onSuccess(json);
+					showShortToast("onSuccess");
+					LogUtils.e("返回结果:" + json);
 
-				int code = FastjsonUtils.getCode(json);
-				String dto = FastjsonUtils.getDto(json);
-				switch (code) {
-				case 200:
-					usersList = FastjsonUtils.getBeanList(dto,
-							UserManagerBean.class);
-					userManagerAdpater = new UserManagerAdpater(mContext, usersList);
-					lv_users.setAdapter(userManagerAdpater);
-					
-					break;
+					int code = FastjsonUtils.getCode(json);
+					String dto = FastjsonUtils.getDto(json);
+					switch (code) {
+					case 200:
+						usersList = FastjsonUtils.getBeanList(dto,
+								UserManagerBean.class);
+						userManagerAdpater = new UserManagerAdpater(mContext, usersList);
+						lv_users.setAdapter(userManagerAdpater);
+						
+						break;
 
-				default:
-					DialogBtn.showDialog(mContext,
-							FastjsonUtils.getSummary(json));
-					break;
+					default:
+						DialogBtn.showDialog(mContext,
+								FastjsonUtils.getSummary(json));
+						break;
+					}
+
 				}
 
-			}
-
-			@Override
-			public void onFailure(Throwable arg0, String json) {
-				// TODO Auto-generated method stub
-				super.onFailure(arg0, json);
-				showShortToast("onFailure");
-			}
-		});
+				@Override
+				public void onFailure(Throwable arg0, String json) {
+					// TODO Auto-generated method stub
+					super.onFailure(arg0, json);
+					showShortToast("onFailure");
+				}
+			});
+		} catch (Exception e) {
+			
+			showShortToast("拉取数据异常");
+		}
+		
 
 	}
 

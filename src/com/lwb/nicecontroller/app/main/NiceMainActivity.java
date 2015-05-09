@@ -63,6 +63,9 @@ public class NiceMainActivity extends BaseFragmentActivity {
 	}
 
 	private void initDatas() {
+		//开启app 默认为未登录
+		myApp.isAdmin = false;
+		
 		// 初始化head_url
 		String head;
 		sp = getSharedPreferences(UrlContants.HEAD_URL_SP, 0);

@@ -89,6 +89,13 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
+        
+        <!-- 管理员设置 -->
+        <activity
+            android:name="com.lwb.nicecontroller.app.user.activity.AdminManagerActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <!-- 管理员修改密码的activity -->
         <activity

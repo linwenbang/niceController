@@ -14,7 +14,6 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.lwb.nicecontroller.R;
@@ -26,7 +25,6 @@ import com.lwb.nicecontroller.utils.FastjsonUtils;
 import com.lwb.nicecontroller.utils.HttpUtils;
 import com.lwb.nicecontroller.utils.MacUtils;
 import com.lwb.nicecontroller.utils.SetTagOrAlisaUtils;
-import com.lwb.nicecontroller.utils.UrlLogUtils;
 
 /**
  * @author lwb 创建日期:2015-4-7 下午10:56:39
@@ -34,10 +32,8 @@ import com.lwb.nicecontroller.utils.UrlLogUtils;
 public class AdminLoginActivity extends BaseActivity {
 
 	private EditText edt_admin_pwd;
-	private EditText edt_url;
 	private Button btn_login;
 	private ProgressDialog pDialog;
-	private TextView txt_result;
 	private View view;
 	private Button btn_sign_out;
 
@@ -63,18 +59,28 @@ public class AdminLoginActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 
 	}
+	
+	private boolean isLogin() {
+		if (MyApplication.isAdmin) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 
 	/**
 	 * 
 	 */
 	private void initView() {
-		// TODO Auto-generated method stub
+
+		if (isLogin()) {
+			
+		}
+		
 		edt_admin_pwd = (EditText) view.findViewById(R.id.edt_admin_pwd);
-		edt_url = (EditText) view.findViewById(R.id.edt_url);
-		edt_url.setText(UrlContants.getADMIN_LOGIN_URL());
+	
 
 		btn_login = (Button) view.findViewById(R.id.btn_login);
-		txt_result = (TextView) view.findViewById(R.id.txt_result);
 		btn_login.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -168,12 +174,6 @@ public class AdminLoginActivity extends BaseActivity {
 
 		String url = UrlContants.getADMIN_LOGIN_URL();
 
-		if (UrlLogUtils.URL_LOG_SWITCH) {
-			url = edt_url.getText().toString();
-		} else {
-			edt_url.setEnabled(false);
-		}
-
 		if (TextUtils.isEmpty(url)) {
 			return;
 		}
@@ -188,7 +188,6 @@ public class AdminLoginActivity extends BaseActivity {
 		body.put("password", pwd);
 		
 		url = UrlContants.creatUrl(url, reqParam);
-		edt_url.setText(url);
 
 		HttpUtils.post(url, body ,new AsyncHttpResponseHandler() {
 
@@ -207,10 +206,6 @@ public class AdminLoginActivity extends BaseActivity {
 				pDialog.dismiss();
 				showShortToast("onSuccess");
 
-				if (txt_result.getVisibility() != View.GONE) {
-					txt_result.setText(json);
-				}
-
 				ResultHandler(json);
 
 			}
@@ -228,13 +223,17 @@ public class AdminLoginActivity extends BaseActivity {
 
 		switch (code) {
 		case 200:
-			DialogBtn.showDialog(mContext, "登录成功");
+//			DialogBtn.showDialog(mContext, "登录成功");
 			// 设置全局标志位
 			MyApplication.isAdmin = true;
 			btn_login.setEnabled(false);
 			btn_sign_out.setEnabled(true);
 			// 设置Admin标签
-			new SetTagOrAlisaUtils().setTag("admin", mContext);
+			new SetTagOrAlisaUtils().setTag("admin", this);
+
+			openActivity(AdminManagerActivity.class);
+			finish();
+			
 			break;
 
 		case 201:
@@ -244,10 +243,11 @@ public class AdminLoginActivity extends BaseActivity {
 			btn_login.setEnabled(true);
 			btn_sign_out.setEnabled(false);
 			// 取消Admin标签,设置成user标签
-			new SetTagOrAlisaUtils().setTag("user", mContext);
+			new SetTagOrAlisaUtils().setTag("user", this);
 		default:
 			DialogBtn.showDialog(mContext, summary);
-			MyApplication.isAdmin = false;
+			MyApplication.isAdmin = false;	
+			
 			break;
 		}
 	}

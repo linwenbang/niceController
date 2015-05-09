@@ -138,6 +138,8 @@ public class UserManagerAdpater extends BaseAdapter {
 
 				int code = FastjsonUtils.getCode(json);
 				switch (code) {
+				case 444:
+				case 202:
 				case 200:
 					DialogBtn.showDialog(mContext, "刪除成功");
 					mList.remove(pos);
