@@ -65,9 +65,9 @@ public class NiceMainActivity extends BaseFragmentActivity {
 	}
 
 	private void initDatas() {
-		//开启app 默认为未登录
+		// 开启app 默认为未登录
 		myApp.isAdmin = false;
-		
+
 		// 初始化head_url
 		String head;
 		sp = getSharedPreferences(UrlContants.HEAD_URL_SP, 0);
@@ -132,19 +132,16 @@ public class NiceMainActivity extends BaseFragmentActivity {
 					setCostomMsg(printBundle(bundle));
 					String msg = bundle.getString("cn.jpush.android.MESSAGE");
 					LogUtils.e("main msg = " + msg);
-					
+
 					try {
 						registerResultBean = (RegisterResultBean) FastjsonUtils
 								.getBeanObject(msg, RegisterResultBean.class);
-						if (registerResultBean == null) {
-							warningResultBean = (WarningResultBean) FastjsonUtils
-									.getBeanObject(msg, WarningResultBean.class);
-						}
+						warningResultBean = (WarningResultBean) FastjsonUtils
+								.getBeanObject(msg, WarningResultBean.class);
 					} catch (Exception e) {
 						LogUtils.e("registerResultBean 解析错误");
 						showShortToast("warningResultBean 解析错误");
 					}
-					
 
 					// 判断推送类别，进行处理-------------------------------------------
 					if (registerResultBean != null
@@ -173,9 +170,9 @@ public class NiceMainActivity extends BaseFragmentActivity {
 					if (warningResultBean != null
 							&& warningResultBean.getMsg_type().equals(
 									"warnning")) {
-						DialogBtn.showDialog(mContext,
-								"警告:" + warningResultBean.getData());
-								
+						DialogBtn.showDialog(mContext, "警告:"
+								+ warningResultBean.getData());
+
 					}
 
 				}
