@@ -57,6 +57,8 @@ public class AdminManagerActivity extends BaseActivity implements OnClickListene
 		txt_admin_pwd_modify.setOnClickListener(this);
 		txt_get_users_list.setOnClickListener(this);
 		txt_logout.setOnClickListener(this);
+		
+		DialogBtn.showDialog(mContext, "登录成功");
 	}
 	
 	

@@ -188,8 +188,8 @@ public class DeviceStatusFragment extends BaseFragment implements
 				img_beep.setSelected(deviceBean.getBeep());
 				img_lock.setSelected(deviceBean.getSafe_mode());
 
-				int hum = deviceBean.getDht11().getWet();
-				int temp = deviceBean.getDht11().getTemp();
+				int hum = deviceBean.getWet();
+				int temp = deviceBean.getTemp();
 
 				txt_hum.setText(String.valueOf(hum));
 				txt_temp.setText(String.valueOf(temp));
@@ -214,6 +214,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 		// TODO Auto-generated method stub
 		String deviceName = null;
 		Boolean isOpen = false;
+
 		switch (deviceView.getId()) {
 		case R.id.img_beep:
 			deviceName = DeviceNameStatus.beep.name;

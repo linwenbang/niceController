@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lwb.nicecontroller.R;
+import com.lwb.nicecontroller.app.view.DialogBtn;
 import com.lwb.nicecontroller.base.BaseActivity;
 import com.lwb.nicecontroller.contants.SharedPreferencesConstants;
 import com.lwb.nicecontroller.contants.UrlContants;
@@ -79,16 +80,22 @@ public class ModifyServerUrlActivity extends BaseActivity {
 
 		Editor editor = sp.edit();
 		editor.putString(SharedPreferencesConstants.HEAD_URL_KEY, new_url);
-		editor.commit();
+		try {
+			editor.commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			UrlContants.HEAD_URL = new_url;
+			txt_old_url.setText(new_url);
 
-		UrlContants.HEAD_URL = new_url;
-		txt_old_url.setText(new_url);
-
-		// 关闭软键盘
-		if (view != null) {
-			InputMethodManager inputmanger = (InputMethodManager) mContext
-					.getSystemService(Context.INPUT_METHOD_SERVICE);
-			inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
+			// 关闭软键盘
+			if (view != null) {
+				InputMethodManager inputmanger = (InputMethodManager) mContext
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
+			}
+			
+			DialogBtn.showDialog(mContext, "修改密码成功");
 		}
 	}
 

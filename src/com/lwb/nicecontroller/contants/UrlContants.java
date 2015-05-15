@@ -145,5 +145,4 @@ public class UrlContants {
 		restUri = restUri.replace(" ", "%20");
 		return restUri;
 	}
-
 }

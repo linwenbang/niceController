@@ -27,6 +27,7 @@ import com.lwb.nicecontroller.app.view.DialogBtn.setNegativeButton;
 import com.lwb.nicecontroller.app.view.DialogBtn.setPositiveButton;
 import com.lwb.nicecontroller.base.BaseFragmentActivity;
 import com.lwb.nicecontroller.bean.RegisterResultBean;
+import com.lwb.nicecontroller.bean.WarningResultBean;
 import com.lwb.nicecontroller.contants.SharedPreferencesConstants;
 import com.lwb.nicecontroller.contants.UrlContants;
 import com.lwb.nicecontroller.utils.FastjsonUtils;
@@ -44,6 +45,7 @@ public class NiceMainActivity extends BaseFragmentActivity {
 
 	private List<Map<String, String>> pushList = new ArrayList<Map<String, String>>();
 	private RegisterResultBean registerResultBean;
+	private WarningResultBean warningResultBean;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -129,13 +131,18 @@ public class NiceMainActivity extends BaseFragmentActivity {
 				if (bundle != null) {
 					setCostomMsg(printBundle(bundle));
 					String msg = bundle.getString("cn.jpush.android.MESSAGE");
-					LogUtils.e("msg = " + msg);
+					LogUtils.e("main msg = " + msg);
 					
 					try {
 						registerResultBean = (RegisterResultBean) FastjsonUtils
 								.getBeanObject(msg, RegisterResultBean.class);
+						if (registerResultBean == null) {
+							warningResultBean = (WarningResultBean) FastjsonUtils
+									.getBeanObject(msg, WarningResultBean.class);
+						}
 					} catch (Exception e) {
-						LogUtils.e("解析错误");
+						LogUtils.e("registerResultBean 解析错误");
+						showShortToast("warningResultBean 解析错误");
 					}
 					
 
@@ -162,6 +169,13 @@ public class NiceMainActivity extends BaseFragmentActivity {
 									}
 
 								});
+					}
+					if (warningResultBean != null
+							&& warningResultBean.getMsg_type().equals(
+									"warnning")) {
+						DialogBtn.showDialog(mContext,
+								"警告:" + warningResultBean.getData());
+								
 					}
 
 				}

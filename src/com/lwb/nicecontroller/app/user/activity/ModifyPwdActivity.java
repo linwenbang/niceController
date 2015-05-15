@@ -113,6 +113,8 @@ public class ModifyPwdActivity extends BaseActivity {
 				switch (code) {
 				case 200:
 					DialogBtn.showDialog(mContext, "修改密码成功");
+					edt_new_pwd.setText("");
+					edt_old_pwd.setText("");
 					break;
 
 				default:
