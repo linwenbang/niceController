@@ -111,17 +111,11 @@ public class AdminManagerActivity extends BaseActivity implements OnClickListene
 		switch (code) {
 		case 200:
 		case 201:
-			DialogBtn.showDialog(mContext, "退出成功");
+			showShortToast("退出成功");
 			// 设置全局标志位
 			MyApplication.isAdmin = false;
 			// 取消Admin标签,设置成user标签
 			new SetTagOrAlisaUtils().setTag("user", this);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			finish();
 		default:
 			DialogBtn.showDialog(mContext, summary);

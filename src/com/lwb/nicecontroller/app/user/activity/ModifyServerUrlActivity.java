@@ -95,7 +95,7 @@ public class ModifyServerUrlActivity extends BaseActivity {
 				inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
 			}
 			
-			DialogBtn.showDialog(mContext, "修改密码成功");
+			DialogBtn.showDialog(mContext, "修改URL成功");
 		}
 	}
 

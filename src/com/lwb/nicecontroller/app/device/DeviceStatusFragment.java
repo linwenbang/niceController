@@ -18,6 +18,7 @@ import com.baidu.voicerecognition.android.ui.BaiduASRDigitalDialog;
 import com.baidu.voicerecognition.android.ui.DialogRecognitionListener;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.lwb.nicecontroller.R;
+import com.lwb.nicecontroller.app.view.DialogBtn;
 import com.lwb.nicecontroller.base.BaseFragment;
 import com.lwb.nicecontroller.bean.DeviceBean;
 import com.lwb.nicecontroller.contants.UrlContants;
@@ -152,8 +153,17 @@ public class DeviceStatusFragment extends BaseFragment implements
 				// TODO Auto-generated method stub
 				super.onSuccess(json);
 				LogUtils.e("返回结果" + json);
-
-				setResult(device, action, json, deviceView);
+				int code = FastjsonUtils.getCode(json);
+				switch (code) {
+				case 200:
+					setResult(device, action, json, deviceView);
+					break;
+				default:
+					String summary = FastjsonUtils.getSummary(json);
+					DialogBtn.showDialog(mContext, summary);
+					break;
+				}
+				
 			}
 
 			@Override
@@ -198,10 +208,8 @@ public class DeviceStatusFragment extends BaseFragment implements
 				seekBar_temp.setProgress(temp);
 				showShortToast("更新设备状态成功");
 			} catch (Exception e) {
-				LogUtils.e("返回结果解析错误：" + json);
-				showShortToast("返回结果解析错误：" + json);
+				LogUtils.e("返回结果解析错误：" + json);	
 			}
-
 		} else {
 			changStatus(deviceView);
 		}
@@ -214,6 +222,19 @@ public class DeviceStatusFragment extends BaseFragment implements
 		// TODO Auto-generated method stub
 		String deviceName = null;
 		Boolean isOpen = false;
+
+		if (deviceView.getId() == R.id.txt_refresh) {
+			actionForDeviceStatus(DeviceNameStatus.all.name,
+					DeviceActionStatus.status.action, null);
+			return;
+		}
+
+		if (deviceBean == null) {
+			showShortToast("需先成功刷新所有设备状态-自动刷新中...");
+			actionForDeviceStatus(DeviceNameStatus.all.name,
+					DeviceActionStatus.status.action, null);
+			return;
+		}
 
 		switch (deviceView.getId()) {
 		case R.id.img_beep:
@@ -232,9 +253,6 @@ public class DeviceStatusFragment extends BaseFragment implements
 			deviceName = DeviceNameStatus.safe_mode.name;
 			isOpen = deviceBean.getSafe_mode();
 			break;
-		case R.id.txt_refresh:
-			actionForDeviceStatus(DeviceNameStatus.all.name, DeviceActionStatus.status.action, null);
-			return;
 		default:
 			break;
 		}
