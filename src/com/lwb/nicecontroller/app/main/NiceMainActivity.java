@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import cn.jpush.android.api.JPushInterface;
 
+import com.igexin.sdk.PushManager;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.lwb.nicecontroller.R;
 import com.lwb.nicecontroller.app.device.DeviceStatusFragment;
@@ -26,6 +27,7 @@ import com.lwb.nicecontroller.app.view.DialogBtn;
 import com.lwb.nicecontroller.app.view.DialogBtn.setNegativeButton;
 import com.lwb.nicecontroller.app.view.DialogBtn.setPositiveButton;
 import com.lwb.nicecontroller.base.BaseFragmentActivity;
+import com.lwb.nicecontroller.base.MyApplication;
 import com.lwb.nicecontroller.bean.RegisterResultBean;
 import com.lwb.nicecontroller.bean.WarningResultBean;
 import com.lwb.nicecontroller.contants.SharedPreferencesConstants;
@@ -47,6 +49,8 @@ public class NiceMainActivity extends BaseFragmentActivity {
 	private RegisterResultBean registerResultBean;
 	private WarningResultBean warningResultBean;
 
+	
+//	private PushDemoReceiver getuiRecevier ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,7 +58,17 @@ public class NiceMainActivity extends BaseFragmentActivity {
 
 		initView();
 		initDatas();
+		initPush();
 		registerMessageReceiver();
+	}
+
+	/**
+	 * 
+	 */
+	private void initPush() {
+		// TODO Auto-generated method stub
+
+		PushManager.getInstance().initialize(this.getApplicationContext());
 	}
 
 	@Override
@@ -66,7 +80,7 @@ public class NiceMainActivity extends BaseFragmentActivity {
 
 	private void initDatas() {
 		// 开启app 默认为未登录
-		myApp.isAdmin = false;
+		MyApplication.isAdmin = false;
 
 		// 初始化head_url
 		String head;
@@ -237,4 +251,5 @@ public class NiceMainActivity extends BaseFragmentActivity {
 		}
 		return sb.toString().trim();
 	}
+	
 }

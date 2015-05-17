@@ -10,5 +10,6 @@ package com.lwb.nicecontroller;
 public final class Manifest {
     public static final class permission {
         public static final String JPUSH_MESSAGE="com.lwb.nicecontroller.permission.JPUSH_MESSAGE";
+        public static final String nicecontroller="getui.permission.GetuiService.com.lwb.nicecontroller";
     }
 }
