@@ -12,6 +12,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/btn_register"
         android:layout_marginTop="39dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:hint="请输入昵称"
         android:ems="20" />
 
     <Button

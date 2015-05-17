@@ -24,6 +24,7 @@ import cn.jpush.android.api.TagAliasCallback;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.lwb.nicecontroller.R;
 import com.lwb.nicecontroller.app.view.DialogBtn;
+import com.lwb.nicecontroller.app.view.DialogBtn.setPositiveButton;
 import com.lwb.nicecontroller.base.BaseActivity;
 import com.lwb.nicecontroller.contants.UrlContants;
 import com.lwb.nicecontroller.jpush.ExampleUtil;
@@ -47,8 +48,9 @@ public class UserRegisterActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
-		view = LayoutInflater.from(this).inflate(R.layout.register_layout, null);
+
+		view = LayoutInflater.from(this)
+				.inflate(R.layout.register_layout, null);
 		setContentView(view);
 		initView();
 		initData();
@@ -107,17 +109,14 @@ public class UserRegisterActivity extends BaseActivity {
 	}
 
 	/**
-	 * 提交注册信息 POST: /api/v2.0/regist/{userid} 
-	 * Body部分 
-	 * 信息单元 必选 类型 长度 说明 
-	 * userid 非   String 用户ID 
-	 * Alias  是   String 用户昵称 
+	 * 提交注册信息 POST: /api/v2.0/regist/{userid}  Body部分 信息单元 必选 类型 长度 说明 userid 非
+	 * String 用户ID Alias 是 String 用户昵称
 	 */
 	private void registerUser() {
 		// TODO Auto-generated method stub
 
 		String alisa = edt_alisa.getText().toString().trim();
-		
+
 		if (TextUtils.isEmpty(alisa)) {
 			// Toast.makeText(getActivity(), "请输入昵称", Toast.LENGTH_LONG).show();
 			DialogBtn.showDialog(mContext, "请输入昵称");
@@ -125,7 +124,6 @@ public class UserRegisterActivity extends BaseActivity {
 		}
 
 		String url = UrlContants.getREGISTER_URL();
-		
 
 		Log.e("BUG", "get()调用");
 		pDialog = ProgressDialog.show(this, "请稍等", "数据加载中");
@@ -138,11 +136,11 @@ public class UserRegisterActivity extends BaseActivity {
 
 		url = UrlContants.creatUrl(url, reqParam);
 
-		Map<String, String> body = new HashMap<String,String>();
+		Map<String, String> body = new HashMap<String, String>();
 		body.put("userid", MacUtils.getMac(mContext));
 		body.put("Alias", alisa);
-		
-		HttpUtils.post(url, body,new AsyncHttpResponseHandler() {
+
+		HttpUtils.post(url, body, new AsyncHttpResponseHandler() {
 
 			@Override
 			public void onFailure(Throwable arg0, String arg1) {
@@ -157,12 +155,14 @@ public class UserRegisterActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 				super.onSuccess(json);
 				pDialog.dismiss();
-				showShortToast("onSuccess");
-
-				setAlias();
-
-				// 开始解析，json 转换成 实体类
-				// FastjsonUtils.getBeanObject(json, c);
+//				setAlias();
+				DialogBtn.showDialog(mContext, "申请成功，请等候审核","确定",new setPositiveButton() {
+					@Override
+					public void onClick() {
+						finish();
+					}
+				});
+				
 			}
 		});
 
