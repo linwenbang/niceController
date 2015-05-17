@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -49,8 +50,9 @@ public class DeviceStatusFragment extends BaseFragment implements
 	private ImageView img_fan;
 	private ImageView img_beep;
 	private ImageView img_lock;
-	private ImageView img_hum;
-	private ImageView img_temp;
+	private ImageView img_auto_led;
+	private ImageView img_sound;
+	private ImageView img_pir;
 
 	private TextView txt_temp;
 	private TextView txt_hum;
@@ -58,6 +60,12 @@ public class DeviceStatusFragment extends BaseFragment implements
 
 	private SeekBar seekBar_temp;
 	private SeekBar seekBar_hum;
+
+	private SeekBar seekBar_cpu;
+	private SeekBar seekBar_gpu;
+
+	private LinearLayout ly_seek_cpu_gpu;
+	private LinearLayout ly_seek_temp_hum;
 
 	// 全局常量------------
 	private static final String DEVICE_KEY = "device";
@@ -88,15 +96,25 @@ public class DeviceStatusFragment extends BaseFragment implements
 		img_led = (ImageView) view.findViewById(R.id.img_led);
 		img_fan = (ImageView) view.findViewById(R.id.img_fan);
 		img_lock = (ImageView) view.findViewById(R.id.img_lock);
-		img_hum = (ImageView) view.findViewById(R.id.img_hum);
-		img_temp = (ImageView) view.findViewById(R.id.img_temp);
+		img_auto_led = (ImageView) view.findViewById(R.id.img_auto_led);
+		img_sound = (ImageView) view.findViewById(R.id.img_sound);
+		img_pir = (ImageView) view.findViewById(R.id.img_pir);
+
+		ly_seek_cpu_gpu = (LinearLayout) view
+				.findViewById(R.id.ly_seek_cpu_gpu);
+		ly_seek_temp_hum = (LinearLayout) view
+				.findViewById(R.id.ly_seek_temp_hum);
 
 		img_beep.setOnClickListener(this);
 		img_led.setOnClickListener(this);
 		img_fan.setOnClickListener(this);
 		img_lock.setOnClickListener(this);
-		img_hum.setOnClickListener(this);
-		img_temp.setOnClickListener(this);
+		img_auto_led.setOnClickListener(this);
+		img_sound.setOnClickListener(this);
+		img_pir.setOnClickListener(this);
+
+		ly_seek_cpu_gpu.setOnClickListener(this);
+		ly_seek_temp_hum.setOnClickListener(this);
 
 		txt_hum = (TextView) view.findViewById(R.id.txt_hum);
 		txt_temp = (TextView) view.findViewById(R.id.txt_temp);
@@ -105,6 +123,14 @@ public class DeviceStatusFragment extends BaseFragment implements
 
 		seekBar_hum = (SeekBar) view.findViewById(R.id.seekBar_hum);
 		seekBar_temp = (SeekBar) view.findViewById(R.id.seekBar_temp);
+		seekBar_cpu = (SeekBar) view.findViewById(R.id.seekBar_cpu);
+		seekBar_gpu = (SeekBar) view.findViewById(R.id.seekBar_gpu);
+
+		// 禁止用户进行拉动
+		seekBar_hum.setEnabled(false);
+		seekBar_temp.setEnabled(false);
+		seekBar_cpu.setEnabled(false);
+		seekBar_gpu.setEnabled(false);
 	}
 
 	/**
@@ -129,13 +155,27 @@ public class DeviceStatusFragment extends BaseFragment implements
 	@Override
 	public void onClick(View view) {
 		// TODO Auto-generated method stub
+
+		Bundle bundle = new Bundle();
+		switch (view.getId()) {
+		case R.id.ly_seek_temp_hum:
+			bundle.putInt("type", 0);
+			openActivityForResult(SeekInfoActivity.class, 0, bundle);
+			return;
+		case R.id.ly_seek_cpu_gpu:
+			bundle.putInt("type", 1);
+			openActivityForResult(SeekInfoActivity.class, 0, bundle);
+			return;
+		default:
+			break;
+		}
 		setDeviceStatus(view);
 	}
 
 	/**
 	 * 获取所有设备状态 POST: /api/v2.0/device/{userid}
 	 */
-	private void actionForDeviceStatus(final String device,
+	public void actionForDeviceStatus(final String device,
 			final String action, final View deviceView) {
 		String url = UrlContants.getGET_DEVICE_STATUS_URL();
 		Map<String, String> reqParam = new HashMap<String, String>();
@@ -163,7 +203,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 					DialogBtn.showDialog(mContext, summary);
 					break;
 				}
-				
+
 			}
 
 			@Override
@@ -197,6 +237,9 @@ public class DeviceStatusFragment extends BaseFragment implements
 				img_fan.setSelected(deviceBean.getFan());
 				img_beep.setSelected(deviceBean.getBeep());
 				img_lock.setSelected(deviceBean.getSafe_mode());
+				img_auto_led.setSelected(deviceBean.getAuto_led());
+				img_pir.setSelected(deviceBean.getPir());
+				img_sound.setSelected(deviceBean.getSound());
 
 				int hum = deviceBean.getWet();
 				int temp = deviceBean.getTemp();
@@ -208,7 +251,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 				seekBar_temp.setProgress(temp);
 				showShortToast("更新设备状态成功");
 			} catch (Exception e) {
-				LogUtils.e("返回结果解析错误：" + json);	
+				LogUtils.e("返回结果解析错误：" + json);
 			}
 		} else {
 			changStatus(deviceView);
@@ -253,6 +296,19 @@ public class DeviceStatusFragment extends BaseFragment implements
 			deviceName = DeviceNameStatus.safe_mode.name;
 			isOpen = deviceBean.getSafe_mode();
 			break;
+		case R.id.img_auto_led:
+			deviceName = DeviceNameStatus.auto_led.name;
+			isOpen = deviceBean.getAuto_led();
+			break;
+		case R.id.img_sound:
+			deviceName = DeviceNameStatus.sound.name;
+			isOpen = deviceBean.getSound();
+			break;
+		case R.id.img_pir:
+			deviceName = DeviceNameStatus.pir.name;
+			isOpen = deviceBean.getPir();
+			break;
+
 		default:
 			break;
 		}
@@ -313,7 +369,6 @@ public class DeviceStatusFragment extends BaseFragment implements
 		}
 		// 设置语音识别模式为输入模式
 		mDialog.setSpeechMode(BaiduASRDigitalDialog.SPEECH_MODE_INPUT);
-		// mDialog.se
 		// 禁用语义识别
 		mDialog.getParams().putBoolean(BaiduASRDigitalDialog.PARAM_NLU_ENABLE,
 				false);

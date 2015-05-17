@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="5dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingTop="5dp" >
 
     <TextView
         android:id="@+id/txt_voice"
@@ -37,9 +37,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="118dp"
-            android:layout_weight="0.21"
+            android:layout_height="90dp"
             android:background="@drawable/home_top_bg"
+            android:gravity="center"
             android:padding="10dp" >
 
             <ImageView
@@ -75,108 +75,398 @@
                 android:src="@drawable/img_lock_selector" />
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal" >
+            android:layout_height="20dp"
+            android:background="@drawable/home_top_bg"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="室内灯光"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="室内风扇"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="警铃"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="安防模式"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:background="@drawable/home_top_bg"
+            android:gravity="center"
+            android:padding="10dp" >
 
             <ImageView
-                android:id="@+id/img_hum"
-                android:layout_width="100dp"
+                android:id="@+id/img_auto_led"
+                android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:padding="10dp"
-                android:src="@drawable/img_hum_selector" />
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/seekBar_hum"
-                android:layout_toRightOf="@+id/img_hum"
-                android:text="TextView" />
-
-            <SeekBar
-                android:id="@+id/seekBar_hum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/textView1"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="16dp"
                 android:layout_weight="1"
-                android:progress="20"
-                android:progressDrawable="@drawable/po_seekbar"
-                android:thumb="@drawable/seekbar_thumb" />
-
-            <TextView
-                android:id="@+id/txt_hum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/seekBar_hum"
-                android:layout_marginTop="16dp"
-                android:layout_toRightOf="@+id/img_hum"
-                android:text="TextView"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/txt_hum"
-                android:layout_alignBottom="@+id/txt_hum"
-                android:layout_toRightOf="@+id/txt_hum"
-                android:text="%"
-                android:textSize="18sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal" >
+                android:padding="15dp"
+                android:src="@drawable/img_auto_led_selector" />
 
             <ImageView
-                android:id="@+id/img_temp"
-                android:layout_width="100dp"
+                android:id="@+id/img_sound"
+                android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:padding="10dp"
-                android:src="@drawable/img_tmp_selector" />
-
-            <SeekBar
-                android:id="@+id/seekBar_temp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="18dp"
-                android:layout_toRightOf="@+id/img_temp"
                 android:layout_weight="1"
-                android:progress="50"
-                android:progressDrawable="@drawable/po_seekbar"
-                android:thumb="@drawable/seekbar_thumb" />
+                android:padding="15dp"
+                android:src="@drawable/img_sound_selector" />
+
+            <ImageView
+                android:id="@+id/img_pir"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:src="@drawable/img_pir_selector" />
+
+            <ImageView
+                android:id="@+id/ImageView05"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:src="@null" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/home_top_bg"
+            android:gravity="top"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
 
             <TextView
-                android:id="@+id/txt_temp"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/seekBar_temp"
-                android:layout_marginTop="17dp"
-                android:layout_toRightOf="@+id/img_temp"
-                android:text="TextView"
-                android:textSize="18sp" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="楼道自动灯"
+                android:textColor="@color/white" />
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/txt_temp"
-                android:layout_alignBottom="@+id/txt_temp"
-                android:layout_toRightOf="@+id/txt_temp"
-                android:text="℃"
-                android:textSize="18sp" />
-        </RelativeLayout>
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="设备声音"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="红外开关"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ly_seek_temp_hum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/rly_seek_temp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/img_temp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="10dp"
+                    android:src="@drawable/img_tmp_selector" />
+
+                <SeekBar
+                    android:id="@+id/seekBar_temp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_toRightOf="@+id/img_temp"
+                    android:layout_weight="1"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/po_seekbar"
+                    android:thumb="@drawable/seekbar_thumb" />
+
+                <TextView
+                    android:id="@+id/txt_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView3"
+                    android:layout_alignBottom="@+id/textView3"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/textView3"
+                    android:text="0"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/txt_submit"
+                    android:layout_alignBottom="@+id/txt_submit"
+                    android:layout_alignLeft="@+id/seekBar_temp"
+                    android:text="温度"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txt_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/seekBar_temp"
+                    android:layout_marginTop="18dp"
+                    android:layout_toRightOf="@+id/txt_temp"
+                    android:text="℃"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rly_seek_hum"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/img_hum"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="10dp"
+                    android:src="@drawable/img_hum_selector" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/seekBar_hum"
+                    android:layout_toRightOf="@+id/img_hum"
+                    android:text="TextView" />
+
+                <SeekBar
+                    android:id="@+id/seekBar_hum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/textView1"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:progress="20"
+                    android:progressDrawable="@drawable/po_seekbar"
+                    android:thumb="@drawable/seekbar_thumb" />
+
+                <TextView
+                    android:id="@+id/TextView06"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/txt_hum"
+                    android:layout_alignBottom="@+id/txt_hum"
+                    android:layout_toRightOf="@+id/img_hum"
+                    android:text="湿度"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txt_hum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/seekBar_hum"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_toRightOf="@+id/TextView06"
+                    android:text="0"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/txt_hum"
+                    android:layout_alignBottom="@+id/txt_hum"
+                    android:layout_toRightOf="@+id/txt_hum"
+                    android:text="%"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ly_seek_cpu_gpu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout01"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/img_icon1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="10dp"
+                    android:src="@drawable/cpu_temp" />
+
+                <SeekBar
+                    android:id="@+id/seekBar_cpu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_toRightOf="@+id/img_icon1"
+                    android:layout_weight="1"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/po_seekbar"
+                    android:thumb="@drawable/seekbar_thumb" />
+
+                <TextView
+                    android:id="@+id/TextView02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/TextView08"
+                    android:layout_alignBottom="@+id/TextView08"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/TextView08"
+                    android:text="0"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/TextView08"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/TextView04"
+                    android:layout_alignBottom="@+id/TextView04"
+                    android:layout_alignLeft="@+id/seekBar_cpu"
+                    android:text="CPU"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/TextView04"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/seekBar_cpu"
+                    android:layout_marginTop="18dp"
+                    android:layout_toRightOf="@+id/TextView02"
+                    android:text="℃"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout02"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/ImageView02"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="10dp"
+                    android:src="@drawable/gpu_temp" />
+
+                <TextView
+                    android:id="@+id/TextView07"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/seekBar_gpu"
+                    android:layout_toRightOf="@+id/ImageView02"
+                    android:text="TextView" />
+
+                <SeekBar
+                    android:id="@+id/seekBar_gpu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/TextView07"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:progress="20"
+                    android:progressDrawable="@drawable/po_seekbar"
+                    android:thumb="@drawable/seekbar_thumb" />
+
+                <TextView
+                    android:id="@+id/TextView03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/TextView01"
+                    android:layout_alignBottom="@+id/TextView01"
+                    android:layout_toRightOf="@+id/ImageView02"
+                    android:text="GPU"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/seekBar_gpu"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_toRightOf="@+id/TextView03"
+                    android:text="0"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/TextView05"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/TextView01"
+                    android:layout_alignBottom="@+id/TextView01"
+                    android:layout_toRightOf="@+id/TextView01"
+                    android:text="%"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <TextView

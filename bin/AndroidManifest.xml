@@ -96,6 +96,14 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
+        
+        <!-- 设置警戒值 -->
+        <activity
+            android:name="com.lwb.nicecontroller.app.device.SeekInfoActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        
 
         <!-- 管理员修改密码的activity -->
         <activity

@@ -30,6 +30,8 @@ import com.lwb.nicecontroller.bean.RegisterResultBean;
 import com.lwb.nicecontroller.bean.WarningResultBean;
 import com.lwb.nicecontroller.contants.SharedPreferencesConstants;
 import com.lwb.nicecontroller.contants.UrlContants;
+import com.lwb.nicecontroller.enums.DeviceActionStatus;
+import com.lwb.nicecontroller.enums.DeviceNameStatus;
 import com.lwb.nicecontroller.utils.FastjsonUtils;
 import com.lwb.nicecontroller.utils.HttpUtils;
 import com.lwb.nicecontroller.utils.LogUtils;
@@ -236,5 +238,12 @@ public class NiceMainActivity extends BaseFragmentActivity {
 			}
 		}
 		return sb.toString().trim();
+	}
+	
+	@Override
+	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(arg0, arg1, arg2);
+		LogUtils.e("onActivityResult");
 	}
 }

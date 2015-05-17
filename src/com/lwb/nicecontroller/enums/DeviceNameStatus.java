@@ -18,7 +18,13 @@ public enum DeviceNameStatus  {
 	/** 安防模式 */
 	safe_mode("safe_mode"),
 	/** 摄像头照片*/
-	picture("picture");
+	picture("picture"),
+	/** 红外*/
+	pir("pir"),
+	/** 设备声音*/
+	sound("sound"),
+	/** 自动灯*/
+	auto_led("auto_led");
 
 	public final String name;
 
