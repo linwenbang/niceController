@@ -57,6 +57,8 @@ public class DeviceStatusFragment extends BaseFragment implements
 	private TextView txt_temp;
 	private TextView txt_hum;
 	private TextView txt_refresh;
+	private TextView txt_cpu_temp;
+	private TextView txt_gpu_temp;
 
 	private SeekBar seekBar_temp;
 	private SeekBar seekBar_hum;
@@ -118,6 +120,8 @@ public class DeviceStatusFragment extends BaseFragment implements
 
 		txt_hum = (TextView) view.findViewById(R.id.txt_hum);
 		txt_temp = (TextView) view.findViewById(R.id.txt_temp);
+		txt_cpu_temp = (TextView) view.findViewById(R.id.txt_cpu_temp);
+		txt_gpu_temp = (TextView) view.findViewById(R.id.txt_gpu_temp);
 		txt_refresh = (TextView) view.findViewById(R.id.txt_refresh);
 		txt_refresh.setOnClickListener(this);
 
@@ -175,8 +179,8 @@ public class DeviceStatusFragment extends BaseFragment implements
 	/**
 	 * 获取所有设备状态 POST: /api/v2.0/device/{userid}
 	 */
-	public void actionForDeviceStatus(final String device,
-			final String action, final View deviceView) {
+	public void actionForDeviceStatus(final String device, final String action,
+			final View deviceView) {
 		String url = UrlContants.getGET_DEVICE_STATUS_URL();
 		Map<String, String> reqParam = new HashMap<String, String>();
 		reqParam.put("{userid}", MacUtils.getMac(mContext));
@@ -243,12 +247,17 @@ public class DeviceStatusFragment extends BaseFragment implements
 
 				int hum = deviceBean.getWet();
 				int temp = deviceBean.getTemp();
-
+				int cpu_temp = deviceBean.getCpu_temp();
+				int gpu_temp = deviceBean.getGpu_temp();
 				txt_hum.setText(String.valueOf(hum));
 				txt_temp.setText(String.valueOf(temp));
-
+				txt_cpu_temp.setText(String.valueOf(cpu_temp));
+				txt_gpu_temp.setText(String.valueOf(gpu_temp));
 				seekBar_hum.setProgress(hum);
 				seekBar_temp.setProgress(temp);
+				seekBar_cpu.setProgress(cpu_temp);
+				seekBar_gpu.setProgress(gpu_temp);
+
 				showShortToast("更新设备状态成功");
 			} catch (Exception e) {
 				LogUtils.e("返回结果解析错误：" + json);
