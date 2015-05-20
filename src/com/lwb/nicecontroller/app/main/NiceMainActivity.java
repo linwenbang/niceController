@@ -26,12 +26,11 @@ import com.lwb.nicecontroller.app.view.DialogBtn;
 import com.lwb.nicecontroller.app.view.DialogBtn.setNegativeButton;
 import com.lwb.nicecontroller.app.view.DialogBtn.setPositiveButton;
 import com.lwb.nicecontroller.base.BaseFragmentActivity;
+import com.lwb.nicecontroller.base.MyApplication;
 import com.lwb.nicecontroller.bean.RegisterResultBean;
 import com.lwb.nicecontroller.bean.WarningResultBean;
 import com.lwb.nicecontroller.contants.SharedPreferencesConstants;
 import com.lwb.nicecontroller.contants.UrlContants;
-import com.lwb.nicecontroller.enums.DeviceActionStatus;
-import com.lwb.nicecontroller.enums.DeviceNameStatus;
 import com.lwb.nicecontroller.utils.FastjsonUtils;
 import com.lwb.nicecontroller.utils.HttpUtils;
 import com.lwb.nicecontroller.utils.LogUtils;
@@ -68,7 +67,7 @@ public class NiceMainActivity extends BaseFragmentActivity {
 
 	private void initDatas() {
 		// 开启app 默认为未登录
-		myApp.isAdmin = false;
+		MyApplication.isAdmin = false;
 
 		// 初始化head_url
 		String head;

@@ -8,28 +8,44 @@ public class DeviceBean {
 	private Boolean fan;
 	private Boolean safe_mode;
 	private Boolean beep;
-	private Boolean auto_led;
+	private Boolean led_auto;
 	private Boolean pir;
 	private Boolean sound;
-	private int temp;
-	private int wet;
-	private int cpu_temp;
-	private int gpu_temp;
-
+	private Boolean motor;
+	private float temp;
+	private float wet;
+	private float cpu_temp;
+	private float gpu_temp;
 
 	/**
-	 * @return the auto_led
+	 * @param temp the temp to set
 	 */
-	public Boolean getAuto_led() {
-		return auto_led;
+	public void setTemp(float temp) {
+		this.temp = temp;
 	}
 
 	/**
-	 * @param auto_led the auto_led to set
+	 * @param wet the wet to set
 	 */
-	public void setAuto_led(Boolean auto_led) {
-		this.auto_led = auto_led;
+	public void setWet(float wet) {
+		this.wet = wet;
 	}
+
+	/**
+	 * @param cpu_temp the cpu_temp to set
+	 */
+	public void setCpu_temp(float cpu_temp) {
+		this.cpu_temp = cpu_temp;
+	}
+
+	/**
+	 * @param gpu_temp the gpu_temp to set
+	 */
+	public void setGpu_temp(float gpu_temp) {
+		this.gpu_temp = gpu_temp;
+	}
+
+	
 
 	/**
 	 * @return the pir
@@ -62,7 +78,7 @@ public class DeviceBean {
 	/**
 	 * @return the temp
 	 */
-	public int getTemp() {
+	public float getTemp() {
 		return temp;
 	}
 
@@ -76,7 +92,7 @@ public class DeviceBean {
 	/**
 	 * @return the wet
 	 */
-	public int getWet() {
+	public float getWet() {
 		return wet;
 	}
 
@@ -90,7 +106,7 @@ public class DeviceBean {
 	/**
 	 * @return the cpu_temp
 	 */
-	public int getCpu_temp() {
+	public float getCpu_temp() {
 		return cpu_temp;
 	}
 
@@ -104,7 +120,7 @@ public class DeviceBean {
 	/**
 	 * @return the gpu_temp
 	 */
-	public int getGpu_temp() {
+	public float getGpu_temp() {
 		return gpu_temp;
 	}
 
@@ -189,6 +205,35 @@ public class DeviceBean {
 	 */
 	public void setPicture(String picture) {
 		this.picture = picture;
+	}
+
+	/**
+	 * @return the motor
+	 */
+	public Boolean getMotor() {
+		return motor;
+	}
+
+	/**
+	 * @param motor the motor to set
+	 */
+	public void setMotor(Boolean motor) {
+		this.motor = motor;
+	}
+
+	
+	/**
+	 * @return the led_auto
+	 */
+	public Boolean getLed_auto() {
+		return led_auto;
+	}
+
+	/**
+	 * @param led_auto the led_auto to set
+	 */
+	public void setLed_auto(Boolean led_auto) {
+		this.led_auto = led_auto;
 	}
 
 	private String picture;

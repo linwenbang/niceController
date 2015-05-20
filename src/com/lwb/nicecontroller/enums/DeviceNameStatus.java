@@ -21,10 +21,12 @@ public enum DeviceNameStatus  {
 	picture("picture"),
 	/** 红外*/
 	pir("pir"),
+	/** 窗帘*/
+	motor("motor"),
 	/** 设备声音*/
 	sound("sound"),
 	/** 自动灯*/
-	auto_led("auto_led");
+	led_auto("led_auto");
 
 	public final String name;
 

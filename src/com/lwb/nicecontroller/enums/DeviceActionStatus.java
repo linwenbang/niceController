@@ -10,7 +10,9 @@ public enum DeviceActionStatus  {
 	/** 关闭 */
 	close("close"),
 	/** 查询状态 */
-	status("status");
+	status("status"),
+	/** 关闭 */
+	getPic("get_pic");
 
 	public final String action;
 

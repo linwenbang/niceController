@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.R.string;
 import android.annotation.SuppressLint;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -53,6 +57,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 	private ImageView img_auto_led;
 	private ImageView img_sound;
 	private ImageView img_pir;
+	private ImageView img_motor;
 
 	private TextView txt_temp;
 	private TextView txt_hum;
@@ -85,7 +90,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 		initView();
 		initData();
 		initVoice();
-
+		initPicWindow();
 		return view;
 	}
 
@@ -101,6 +106,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 		img_auto_led = (ImageView) view.findViewById(R.id.img_auto_led);
 		img_sound = (ImageView) view.findViewById(R.id.img_sound);
 		img_pir = (ImageView) view.findViewById(R.id.img_pir);
+		img_motor = (ImageView) view.findViewById(R.id.img_motor);
 
 		ly_seek_cpu_gpu = (LinearLayout) view
 				.findViewById(R.id.ly_seek_cpu_gpu);
@@ -112,8 +118,9 @@ public class DeviceStatusFragment extends BaseFragment implements
 		img_fan.setOnClickListener(this);
 		img_lock.setOnClickListener(this);
 		img_auto_led.setOnClickListener(this);
-		img_sound.setOnClickListener(this);
-		img_pir.setOnClickListener(this);
+		// img_sound.setOnClickListener(this);
+		// img_pir.setOnClickListener(this);
+		img_motor.setOnClickListener(this);
 
 		ly_seek_cpu_gpu.setOnClickListener(this);
 		ly_seek_temp_hum.setOnClickListener(this);
@@ -175,6 +182,37 @@ public class DeviceStatusFragment extends BaseFragment implements
 		}
 		setDeviceStatus(view);
 	}
+	private PopupWindow popupWindow;
+	private void initPicWindow() {
+		// 创建PopupWindow对象
+		LayoutInflater inflater = LayoutInflater.from(getActivity());
+		// 引入窗口配置文件
+		View view = inflater.inflate(R.layout.pic_windows_layout, null);
+		popupWindow = new PopupWindow(view,
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, false);
+		final ImageView img_pic = (ImageView) view.findViewById(R.id.img_pic);
+		// 需要设置一下此参数，点击外边可消失
+		popupWindow.setBackgroundDrawable(new BitmapDrawable());
+		// 设置点击窗口外边窗口消失
+		popupWindow.setOutsideTouchable(true);
+		// 设置此参数获得焦点，否则无法点击
+		popupWindow.setFocusable(true);
+		img_sound.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (popupWindow.isShowing()) {
+					// 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
+					popupWindow.dismiss();
+				} else {
+					// 显示窗口
+					popupWindow.showAsDropDown(v);
+					actionForDeviceStatus(DeviceNameStatus.picture.name,
+							DeviceActionStatus.getPic.action, img_pic);
+				}
+			}
+		});
+
+	}
 
 	/**
 	 * 获取所有设备状态 POST: /api/v2.0/device/{userid}
@@ -207,15 +245,14 @@ public class DeviceStatusFragment extends BaseFragment implements
 					DialogBtn.showDialog(mContext, summary);
 					break;
 				}
-
 			}
 
+			
 			@Override
 			public void onFailure(Throwable arg0, String arg1) {
 				// TODO Auto-generated method stub
 				super.onFailure(arg0, arg1);
-
-				showShortToast("onFailure");
+				DialogBtn.showDialog(mContext, "网络请求失败");
 			}
 		});
 
@@ -228,39 +265,57 @@ public class DeviceStatusFragment extends BaseFragment implements
 	 */
 	private void setResult(String device, String action, String json,
 			View deviceView) {
-		// TODO Auto-generated method stub
+
+		if (device.equals(DeviceNameStatus.picture.name)
+				&& action.equals(DeviceActionStatus.getPic.name())) {
+			//将二进制文件转化成位图
+			
+			String picData;
+			
+			
+			
+			return ;
+		}
+		
+		
 		if (device.equals(DeviceNameStatus.all.name)
 				&& action.equals(DeviceActionStatus.status.name())) {
 			// 获取所有设备状态
+			String dto = FastjsonUtils.getDto(json);
 			try {
-				String dto = FastjsonUtils.getDto(json);
 				deviceBean = (DeviceBean) FastjsonUtils.getBeanObject(dto,
 						DeviceBean.class);
+				if (deviceBean == null) {
+					LogUtils.e("deviceBean 为空");
+					return;
+				}
 
 				img_led.setSelected(deviceBean.getLed());
 				img_fan.setSelected(deviceBean.getFan());
 				img_beep.setSelected(deviceBean.getBeep());
 				img_lock.setSelected(deviceBean.getSafe_mode());
-				img_auto_led.setSelected(deviceBean.getAuto_led());
+				img_auto_led.setSelected(deviceBean.getLed_auto());
 				img_pir.setSelected(deviceBean.getPir());
 				img_sound.setSelected(deviceBean.getSound());
+				img_motor.setSelected(deviceBean.getMotor());
 
-				int hum = deviceBean.getWet();
-				int temp = deviceBean.getTemp();
-				int cpu_temp = deviceBean.getCpu_temp();
-				int gpu_temp = deviceBean.getGpu_temp();
+				float hum = deviceBean.getWet();
+				float temp = deviceBean.getTemp();
+				float cpu_temp = deviceBean.getCpu_temp();
+				float gpu_temp = deviceBean.getGpu_temp();
+
 				txt_hum.setText(String.valueOf(hum));
 				txt_temp.setText(String.valueOf(temp));
 				txt_cpu_temp.setText(String.valueOf(cpu_temp));
 				txt_gpu_temp.setText(String.valueOf(gpu_temp));
-				seekBar_hum.setProgress(hum);
-				seekBar_temp.setProgress(temp);
-				seekBar_cpu.setProgress(cpu_temp);
-				seekBar_gpu.setProgress(gpu_temp);
+				seekBar_hum.setProgress((int) hum);
+				seekBar_temp.setProgress((int) temp);
+				seekBar_cpu.setProgress((int) cpu_temp);
+				seekBar_gpu.setProgress((int) gpu_temp);
 
 				showShortToast("更新设备状态成功");
 			} catch (Exception e) {
-				LogUtils.e("返回结果解析错误：" + json);
+				LogUtils.e("返回结果设置错误：" + dto);
 			}
 		} else {
 			changStatus(deviceView);
@@ -273,7 +328,6 @@ public class DeviceStatusFragment extends BaseFragment implements
 	private void setDeviceStatus(View deviceView) {
 		// TODO Auto-generated method stub
 		String deviceName = null;
-		Boolean isOpen = false;
 
 		if (deviceView.getId() == R.id.txt_refresh) {
 			actionForDeviceStatus(DeviceNameStatus.all.name,
@@ -291,38 +345,34 @@ public class DeviceStatusFragment extends BaseFragment implements
 		switch (deviceView.getId()) {
 		case R.id.img_beep:
 			deviceName = DeviceNameStatus.beep.name;
-			isOpen = deviceBean.getBeep();
 			break;
 		case R.id.img_fan:
 			deviceName = DeviceNameStatus.fan.name;
-			isOpen = deviceBean.getFan();
 			break;
 		case R.id.img_led:
 			deviceName = DeviceNameStatus.led.name;
-			isOpen = deviceBean.getLed();
 			break;
 		case R.id.img_lock:
 			deviceName = DeviceNameStatus.safe_mode.name;
-			isOpen = deviceBean.getSafe_mode();
 			break;
 		case R.id.img_auto_led:
-			deviceName = DeviceNameStatus.auto_led.name;
-			isOpen = deviceBean.getAuto_led();
+			deviceName = DeviceNameStatus.led_auto.name;
 			break;
 		case R.id.img_sound:
 			deviceName = DeviceNameStatus.sound.name;
-			isOpen = deviceBean.getSound();
 			break;
 		case R.id.img_pir:
 			deviceName = DeviceNameStatus.pir.name;
-			isOpen = deviceBean.getPir();
+			break;
+		case R.id.img_motor:
+			deviceName = DeviceNameStatus.motor.name;
 			break;
 
 		default:
 			break;
 		}
 
-		if (isOpen) {
+		if (deviceView.isSelected()) {
 			// 关闭申请
 			actionForDeviceStatus(deviceName, DeviceActionStatus.close.action,
 					deviceView);

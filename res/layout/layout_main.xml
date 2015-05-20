@@ -115,14 +115,6 @@
                     android:src="@drawable/img_auto_led_selector" />
 
                 <ImageView
-                    android:id="@+id/img_sound"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:padding="15dp"
-                    android:src="@drawable/img_sound_selector" />
-
-                <ImageView
                     android:id="@+id/img_pir"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
@@ -131,12 +123,21 @@
                     android:src="@drawable/img_pir_selector" />
 
                 <ImageView
-                    android:id="@+id/ImageView05"
+                    android:id="@+id/img_motor"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"
                     android:padding="15dp"
-                    android:src="@null" />
+                    android:src="@drawable/img_motor_selector" />
+
+                <ImageView
+                    android:id="@+id/img_sound"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:padding="15dp"
+                    android:src="@drawable/pic_default" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -160,7 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="设备声音"
+                    android:text="红外状态"
                     android:textColor="@color/white" />
 
                 <TextView
@@ -168,16 +169,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="红外开关"
-                    android:textColor="@color/white" />
+                    android:text="窗帘"
+                    android:textColor="@color/white" 
+                    />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text=""
+                    android:text="获取监控图"
                     android:textColor="@color/white" />
+
             </LinearLayout>
 
             <LinearLayout
