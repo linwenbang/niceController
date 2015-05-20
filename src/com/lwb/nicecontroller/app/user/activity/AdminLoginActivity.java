@@ -1,7 +1,10 @@
 package com.lwb.nicecontroller.app.user.activity;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.http.Header;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -23,6 +26,7 @@ import com.lwb.nicecontroller.base.MyApplication;
 import com.lwb.nicecontroller.contants.UrlContants;
 import com.lwb.nicecontroller.utils.FastjsonUtils;
 import com.lwb.nicecontroller.utils.HttpUtils;
+import com.lwb.nicecontroller.utils.LogUtils;
 import com.lwb.nicecontroller.utils.MacUtils;
 import com.lwb.nicecontroller.utils.SetTagOrAlisaUtils;
 
@@ -37,8 +41,6 @@ public class AdminLoginActivity extends BaseActivity {
 	private View view;
 	private Button btn_sign_out;
 
-
-	
 	@SuppressLint("InflateParams")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +61,11 @@ public class AdminLoginActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	private boolean isLogin() {
 		if (MyApplication.isAdmin) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
@@ -74,11 +76,10 @@ public class AdminLoginActivity extends BaseActivity {
 	private void initView() {
 
 		if (isLogin()) {
-			
+
 		}
-		
+
 		edt_admin_pwd = (EditText) view.findViewById(R.id.edt_admin_pwd);
-	
 
 		btn_login = (Button) view.findViewById(R.id.btn_login);
 		btn_login.setOnClickListener(new OnClickListener() {
@@ -119,8 +120,7 @@ public class AdminLoginActivity extends BaseActivity {
 	}
 
 	/**
-	 * 管理员退出 
-	 * put: /api/v2.0/logout/{userid}
+	 * 管理员退出 put: /api/v2.0/logout/{userid}
 	 */
 	private void signOut() {
 
@@ -134,19 +134,25 @@ public class AdminLoginActivity extends BaseActivity {
 		HttpUtils.put(url, new AsyncHttpResponseHandler() {
 
 			@Override
-			public void onSuccess(String json) {
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
 				// TODO Auto-generated method stub
-				super.onSuccess(json);
+				String json = null;
+				try {
+					json = new String(arg2, "GB2312");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				LogUtils.e("返回结果" + json);
 				pDialog.dismiss();
 
 				ResultHandler(json);
-
 			}
 
 			@Override
-			public void onFailure(Throwable arg0, String arg1) {
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
 				// TODO Auto-generated method stub
-				super.onFailure(arg0, arg1);
 				pDialog.dismiss();
 
 				showShortToast("onFailure");
@@ -156,17 +162,13 @@ public class AdminLoginActivity extends BaseActivity {
 	}
 
 	/**
-	 * 管理员登录 
-	 * POST: /api/v2.0/login/{userid}
-	 * body:
-	 * userid
-	 * password
+	 * 管理员登录 POST: /api/v2.0/login/{userid} body: userid password
 	 */
 	private void loginAdmin() {
 		// TODO Auto-generated method stub
 
 		String pwd = edt_admin_pwd.getText().toString().trim();
-		
+
 		if (TextUtils.isEmpty(pwd)) {
 			showShortToast("请输入密码");
 			return;
@@ -184,31 +186,38 @@ public class AdminLoginActivity extends BaseActivity {
 		reqParam.put("{userid}", MacUtils.getMac(mContext));
 
 		Map<String, String> body = new HashMap<String, String>();
-		body.put("userid",  MacUtils.getMac(mContext));
+		body.put("userid", MacUtils.getMac(mContext));
 		body.put("password", pwd);
-		
+
 		url = UrlContants.creatUrl(url, reqParam);
 
-		HttpUtils.post(url, body ,new AsyncHttpResponseHandler() {
-
+		HttpUtils.post(url, body, new AsyncHttpResponseHandler() {
 			@Override
-			public void onFailure(Throwable arg0, String arg1) {
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
 				// TODO Auto-generated method stub
-				super.onFailure(arg0, arg1);
-				pDialog.dismiss();
-				showShortToast("onFailure");
-			}
-
-			@Override
-			public void onSuccess(String json) {
-				// TODO Auto-generated method stub
-				super.onSuccess(json);
+				String json = null;
+				try {
+					json = new String(arg2, "GB2312");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				LogUtils.e("返回结果" + json);
 				pDialog.dismiss();
 				showShortToast("onSuccess");
 
 				ResultHandler(json);
-
 			}
+
+			
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				pDialog.dismiss();
+				showShortToast("onFailure");
+			}
+
 		});
 
 	}
@@ -223,7 +232,7 @@ public class AdminLoginActivity extends BaseActivity {
 
 		switch (code) {
 		case 200:
-//			DialogBtn.showDialog(mContext, "登录成功");
+			// DialogBtn.showDialog(mContext, "登录成功");
 			// 设置全局标志位
 			MyApplication.isAdmin = true;
 			btn_login.setEnabled(false);
@@ -233,7 +242,7 @@ public class AdminLoginActivity extends BaseActivity {
 
 			openActivity(AdminManagerActivity.class);
 			finish();
-			
+
 			break;
 
 		case 201:
@@ -246,8 +255,8 @@ public class AdminLoginActivity extends BaseActivity {
 			new SetTagOrAlisaUtils().setTag("user", this);
 		default:
 			DialogBtn.showDialog(mContext, summary);
-			MyApplication.isAdmin = false;	
-			
+			MyApplication.isAdmin = false;
+
 			break;
 		}
 	}

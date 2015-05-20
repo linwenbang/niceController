@@ -16,6 +16,68 @@ public class DeviceBean {
 	private float wet;
 	private float cpu_temp;
 	private float gpu_temp;
+	
+	private float flag_gpu_temp;
+	private float flag_cpu_temp;
+	private float flag_temp;
+	private float flag_wet;
+	
+
+	/**
+	 * @return the flag_gpu_temp
+	 */
+	public float getFlag_gpu_temp() {
+		return flag_gpu_temp;
+	}
+
+	/**
+	 * @param flag_gpu_temp the flag_gpu_temp to set
+	 */
+	public void setFlag_gpu_temp(float flag_gpu_temp) {
+		this.flag_gpu_temp = flag_gpu_temp;
+	}
+
+	/**
+	 * @return the flag_cpu_temp
+	 */
+	public float getFlag_cpu_temp() {
+		return flag_cpu_temp;
+	}
+
+	/**
+	 * @param flag_cpu_temp the flag_cpu_temp to set
+	 */
+	public void setFlag_cpu_temp(float flag_cpu_temp) {
+		this.flag_cpu_temp = flag_cpu_temp;
+	}
+
+	/**
+	 * @return the flag_temp
+	 */
+	public float getFlag_temp() {
+		return flag_temp;
+	}
+
+	/**
+	 * @param flag_temp the flag_temp to set
+	 */
+	public void setFlag_temp(float flag_temp) {
+		this.flag_temp = flag_temp;
+	}
+
+	/**
+	 * @return the flag_wet
+	 */
+	public float getFlag_wet() {
+		return flag_wet;
+	}
+
+	/**
+	 * @param flag_wet the flag_wet to set
+	 */
+	public void setFlag_wet(float flag_wet) {
+		this.flag_wet = flag_wet;
+	}
 
 	/**
 	 * @param temp the temp to set

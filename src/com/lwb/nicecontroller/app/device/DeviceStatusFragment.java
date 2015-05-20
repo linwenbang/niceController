@@ -1,11 +1,15 @@
 package com.lwb.nicecontroller.app.device;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.R.string;
+import org.apache.http.Header;
+
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -55,7 +59,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 	private ImageView img_beep;
 	private ImageView img_lock;
 	private ImageView img_auto_led;
-	private ImageView img_sound;
+	private ImageView img_pic_main;
 	private ImageView img_pir;
 	private ImageView img_motor;
 
@@ -104,7 +108,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 		img_fan = (ImageView) view.findViewById(R.id.img_fan);
 		img_lock = (ImageView) view.findViewById(R.id.img_lock);
 		img_auto_led = (ImageView) view.findViewById(R.id.img_auto_led);
-		img_sound = (ImageView) view.findViewById(R.id.img_sound);
+		img_pic_main = (ImageView) view.findViewById(R.id.img_sound);
 		img_pir = (ImageView) view.findViewById(R.id.img_pir);
 		img_motor = (ImageView) view.findViewById(R.id.img_motor);
 
@@ -171,10 +175,18 @@ public class DeviceStatusFragment extends BaseFragment implements
 		switch (view.getId()) {
 		case R.id.ly_seek_temp_hum:
 			bundle.putInt("type", 0);
+			if (deviceBean != null) {
+				bundle.putFloat("temp0", deviceBean.getFlag_temp());
+				bundle.putFloat("temp1", deviceBean.getFlag_wet());
+			}
 			openActivityForResult(SeekInfoActivity.class, 0, bundle);
 			return;
 		case R.id.ly_seek_cpu_gpu:
 			bundle.putInt("type", 1);
+			if (deviceBean != null) {
+				bundle.putFloat("temp0", deviceBean.getFlag_cpu_temp());
+				bundle.putFloat("temp1", deviceBean.getFlag_gpu_temp());
+			}
 			openActivityForResult(SeekInfoActivity.class, 0, bundle);
 			return;
 		default:
@@ -182,22 +194,26 @@ public class DeviceStatusFragment extends BaseFragment implements
 		}
 		setDeviceStatus(view);
 	}
+
 	private PopupWindow popupWindow;
+	private View popView;
+	private ImageView img_pic;
+
 	private void initPicWindow() {
 		// 创建PopupWindow对象
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		// 引入窗口配置文件
-		View view = inflater.inflate(R.layout.pic_windows_layout, null);
-		popupWindow = new PopupWindow(view,
-				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, false);
-		final ImageView img_pic = (ImageView) view.findViewById(R.id.img_pic);
+		popView = inflater.inflate(R.layout.pic_windows_layout, null);
+		popupWindow = new PopupWindow(popView, LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT, false);
+		img_pic = (ImageView) popView.findViewById(R.id.img_pic);
 		// 需要设置一下此参数，点击外边可消失
 		popupWindow.setBackgroundDrawable(new BitmapDrawable());
 		// 设置点击窗口外边窗口消失
 		popupWindow.setOutsideTouchable(true);
 		// 设置此参数获得焦点，否则无法点击
 		popupWindow.setFocusable(true);
-		img_sound.setOnClickListener(new OnClickListener() {
+		img_pic_main.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (popupWindow.isShowing()) {
@@ -206,8 +222,39 @@ public class DeviceStatusFragment extends BaseFragment implements
 				} else {
 					// 显示窗口
 					popupWindow.showAsDropDown(v);
-					actionForDeviceStatus(DeviceNameStatus.picture.name,
-							DeviceActionStatus.getPic.action, img_pic);
+
+					String url = UrlContants.getGET_DEVICE_STATUS_URL();
+					Map<String, String> reqParam = new HashMap<String, String>();
+					reqParam.put("{userid}", MacUtils.getMac(mContext));
+
+					url = UrlContants.creatUrl(url, reqParam);
+					Map<String, String> body = new HashMap<String, String>();
+					body.put(DEVICE_KEY, DeviceNameStatus.picture.name);
+					body.put(ACTION_KEY, DeviceActionStatus.getPic.action);
+
+					HttpUtils.post(url, body, new AsyncHttpResponseHandler() {
+
+						@Override
+						public void onSuccess(int arg0, Header[] arg1,
+								byte[] responseBody) {
+							// TODO Auto-generated method stub
+
+							// 将二进制文件转化成位图
+							Bitmap bitmap = BitmapFactory.decodeByteArray(
+									responseBody, 0, responseBody.length);
+							img_pic.setImageBitmap(bitmap);
+
+						}
+
+						@Override
+						public void onFailure(int arg0, Header[] arg1,
+								byte[] arg2, Throwable arg3) {
+							// TODO Auto-generated method stub
+							showLongToast("请求失败");
+						}
+
+					});
+
 				}
 			}
 		});
@@ -231,10 +278,17 @@ public class DeviceStatusFragment extends BaseFragment implements
 		HttpUtils.post(url, body, new AsyncHttpResponseHandler() {
 
 			@Override
-			public void onSuccess(String json) {
+			public void onSuccess(int arg0, Header[] arg1, byte[] responseBody) {
 				// TODO Auto-generated method stub
-				super.onSuccess(json);
+				String json = null;
+				try {
+					json = new String(responseBody, "GB2312");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				LogUtils.e("返回结果" + json);
+
 				int code = FastjsonUtils.getCode(json);
 				switch (code) {
 				case 200:
@@ -247,11 +301,10 @@ public class DeviceStatusFragment extends BaseFragment implements
 				}
 			}
 
-			
 			@Override
-			public void onFailure(Throwable arg0, String arg1) {
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
 				// TODO Auto-generated method stub
-				super.onFailure(arg0, arg1);
 				DialogBtn.showDialog(mContext, "网络请求失败");
 			}
 		});
@@ -266,18 +319,6 @@ public class DeviceStatusFragment extends BaseFragment implements
 	private void setResult(String device, String action, String json,
 			View deviceView) {
 
-		if (device.equals(DeviceNameStatus.picture.name)
-				&& action.equals(DeviceActionStatus.getPic.name())) {
-			//将二进制文件转化成位图
-			
-			String picData;
-			
-			
-			
-			return ;
-		}
-		
-		
 		if (device.equals(DeviceNameStatus.all.name)
 				&& action.equals(DeviceActionStatus.status.name())) {
 			// 获取所有设备状态
@@ -296,7 +337,7 @@ public class DeviceStatusFragment extends BaseFragment implements
 				img_lock.setSelected(deviceBean.getSafe_mode());
 				img_auto_led.setSelected(deviceBean.getLed_auto());
 				img_pir.setSelected(deviceBean.getPir());
-				img_sound.setSelected(deviceBean.getSound());
+				img_pic_main.setSelected(deviceBean.getSound());
 				img_motor.setSelected(deviceBean.getMotor());
 
 				float hum = deviceBean.getWet();

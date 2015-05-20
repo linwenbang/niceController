@@ -1,10 +1,13 @@
 package com.lwb.nicecontroller.app.main;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.http.Header;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -203,18 +206,27 @@ public class NiceMainActivity extends BaseFragmentActivity {
 		HttpUtils.post(url, body, new AsyncHttpResponseHandler() {
 
 			@Override
-			public void onSuccess(String arg0) {
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
 				// TODO Auto-generated method stub
-				super.onSuccess(arg0);
+				String json = null;
+				try {
+					json = new String(arg2, "GB2312");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				LogUtils.e("返回结果" + json);
 				showShortToast("允许成功" + url);
 			}
-
+			
+			
 			@Override
-			public void onFailure(Throwable arg0, String arg1) {
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
 				// TODO Auto-generated method stub
-				super.onFailure(arg0, arg1);
 				showShortToast("允许失败");
 			}
+			
 		});
 	}
 

@@ -1,8 +1,11 @@
 package com.lwb.nicecontroller.app.user.activity;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.http.Header;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -29,6 +32,7 @@ import com.lwb.nicecontroller.base.BaseActivity;
 import com.lwb.nicecontroller.contants.UrlContants;
 import com.lwb.nicecontroller.jpush.ExampleUtil;
 import com.lwb.nicecontroller.utils.HttpUtils;
+import com.lwb.nicecontroller.utils.LogUtils;
 import com.lwb.nicecontroller.utils.MacUtils;
 
 /**
@@ -143,17 +147,16 @@ public class UserRegisterActivity extends BaseActivity {
 		HttpUtils.post(url, body, new AsyncHttpResponseHandler() {
 
 			@Override
-			public void onFailure(Throwable arg0, String arg1) {
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
 				// TODO Auto-generated method stub
-				super.onFailure(arg0, arg1);
-				pDialog.dismiss();
-				showShortToast("onFailure");
-			}
-
-			@Override
-			public void onSuccess(String json) {
-				// TODO Auto-generated method stub
-				super.onSuccess(json);
+				String json = null;
+				try {
+					json = new String(arg2, "GB2312");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				LogUtils.e("返回结果" + json);
 				pDialog.dismiss();
 //				setAlias();
 				DialogBtn.showDialog(mContext, "申请成功，请等候审核","确定",new setPositiveButton() {
@@ -162,8 +165,17 @@ public class UserRegisterActivity extends BaseActivity {
 						finish();
 					}
 				});
-				
 			}
+			
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				pDialog.dismiss();
+				showShortToast("onFailure");
+			}
+			
+			
 		});
 
 	}

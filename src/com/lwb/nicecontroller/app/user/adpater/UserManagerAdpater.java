@@ -1,8 +1,11 @@
 package com.lwb.nicecontroller.app.user.adpater;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.http.Header;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -88,14 +91,14 @@ public class UserManagerAdpater extends BaseAdapter {
 		String id = mList.get(position).getUserid().toString();
 		if (!TextUtils.isEmpty(id)) {
 			viewHolder.txt_id.setText(id);
-		}else {
+		} else {
 			viewHolder.txt_id.setText("id未知");
 		}
 
 		String alisa = mList.get(position).getAlias().toString();
 		if (!TextUtils.isEmpty(alisa)) {
 			viewHolder.txt_alisa.setText(alisa);
-		}else {
+		} else {
 			viewHolder.txt_id.setText("alisa未知");
 		}
 
@@ -130,12 +133,18 @@ public class UserManagerAdpater extends BaseAdapter {
 		url = UrlContants.creatUrl(url, reqParam);
 
 		HttpUtils.delete(url, new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(String json) {
-				// TODO Auto-generated method stub
-				super.onSuccess(json);
-				LogUtils.e("返回结果:" + json);
 
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				// TODO Auto-generated method stub
+				String json = null;
+				try {
+					json = new String(arg2, "GB2312");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				LogUtils.e("返回结果" + json);
 				int code = FastjsonUtils.getCode(json);
 				switch (code) {
 				case 444:
@@ -151,13 +160,13 @@ public class UserManagerAdpater extends BaseAdapter {
 							FastjsonUtils.getSummary(json));
 					break;
 				}
-
 			}
 
 			@Override
-			public void onFailure(Throwable arg0, String json) {
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
 				// TODO Auto-generated method stub
-				super.onFailure(arg0, json);
+
 			}
 		});
 	}

@@ -1,7 +1,10 @@
 package com.lwb.nicecontroller.app.device;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.http.Header;
 
 import android.os.Bundle;
 import android.view.View;
@@ -59,7 +62,7 @@ public class SeekInfoActivity extends BaseActivity {
 		type = bundle.getInt("type");
 		switch (type) {
 		case 0:// temp_hum
-			
+
 			break;
 		case 1:// cpu_gpu
 			img_icon0.setImageResource(R.drawable.cpu_temp);
@@ -73,6 +76,14 @@ public class SeekInfoActivity extends BaseActivity {
 		default:
 			break;
 		}
+
+		float temp0, temp1;
+		temp0 = bundle.getFloat("temp0");
+		temp1 = bundle.getFloat("temp1");
+
+		edt_warningValue0.setText(String.valueOf(temp0));
+		edt_warningValue1.setText(String.valueOf(temp1));
+
 	}
 
 	private void initView() {
@@ -96,7 +107,6 @@ public class SeekInfoActivity extends BaseActivity {
 				switch (type) {
 				case 0:
 					device = "setRoomWarnValue";
-					
 					break;
 				case 1:
 					device = "setSystemWarnValue";
@@ -126,9 +136,23 @@ public class SeekInfoActivity extends BaseActivity {
 		HttpUtils.post(url, body, new AsyncHttpResponseHandler() {
 
 			@Override
-			public void onSuccess(String json) {
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
 				// TODO Auto-generated method stub
-				super.onSuccess(json);
+				showShortToast("onFailure");
+			}
+
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				// TODO Auto-generated method stub
+				String json = null;
+				try {
+					json = new String(arg2, "GB2312");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 				LogUtils.e("返回结果" + json);
 				setResult(200);
 				int code = FastjsonUtils.getCode(json);
@@ -141,17 +165,6 @@ public class SeekInfoActivity extends BaseActivity {
 					DialogBtn.showDialog(mContext, summary);
 					break;
 				}
-				
-				
-
-			}
-
-			@Override
-			public void onFailure(Throwable arg0, String arg1) {
-				// TODO Auto-generated method stub
-				super.onFailure(arg0, arg1);
-
-				showShortToast("onFailure");
 			}
 		});
 
@@ -162,8 +175,8 @@ public class SeekInfoActivity extends BaseActivity {
 	 */
 	private void setResult(String device, String action, String json) {
 		// TODO Auto-generated method stub
-		DialogBtn.showDialog(mContext, "设置成功", "确定",new setPositiveButton() {
-			
+		DialogBtn.showDialog(mContext, "设置成功", "确定", new setPositiveButton() {
+
 			@Override
 			public void onClick() {
 				// TODO Auto-generated method stub
